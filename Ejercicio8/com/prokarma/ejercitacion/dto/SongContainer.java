@@ -1,13 +1,13 @@
-package com.prokarma.ejercitacion.ej8;
+package com.prokarma.ejercitacion.dto;
 
 import java.util.ArrayList;
 
-public class PlayList {
+public abstract class SongContainer {
 
 	private String name;
 	private ArrayList<Song> songs;
 	
-	public PlayList(String name) {
+	public SongContainer(String name) {
 		this.name = name;
 		this.songs = new ArrayList<Song>();
 	}
@@ -25,9 +25,9 @@ public class PlayList {
 		this.songs = songs;
 	}
 	
-	
 	public String toString() {
 		return "Name: " + this.name + 
 			   "Songs: " + this.songs.toString();
 	}
+	
 }

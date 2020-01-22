@@ -1,4 +1,4 @@
-package com.prokarma.ejercitacion.ej8;
+package com.prokarma.ejercitacion.dto;
 
 import java.util.ArrayList;
 
