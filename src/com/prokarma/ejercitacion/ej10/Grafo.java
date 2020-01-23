@@ -1,24 +1,26 @@
 package com.prokarma.ejercitacion.ej10;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Grafo {
 
-	private ArrayList<Nodo> nodos;
+	private List<Nodo> nodos;
 		
 	
-	public Grafo() {
-		nodos = new ArrayList<Nodo>();
+	public Grafo(List<Nodo> nodos) {
+		this.nodos = nodos;
 	}
 
 
-	public ArrayList<Nodo> getNodos() {
+	public List<Nodo> getNodos() {
 		return nodos;
 	}
-	public void setNodos(ArrayList<Nodo> nodos) {
+	public void setNodos(List<Nodo> nodos) {
 		this.nodos = nodos;
 	}
 	
-	
+	public void addNodo(Nodo nodo) {
+		this.nodos.add(nodo);
+	}
 
 }

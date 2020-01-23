@@ -24,5 +24,9 @@ public class Arista {
 	}
 	
 	
+	public String toString() {
+		return " Id: " + this.id + 
+			   ", IdNextNodo: " + this.idNext;
+	}
 	
 }

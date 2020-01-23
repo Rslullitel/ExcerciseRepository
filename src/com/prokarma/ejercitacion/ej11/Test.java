@@ -14,7 +14,7 @@ public static final String MSG_ERR = "Los simbolos no se encuentran equilibrados
 
 		Stack<String> pilaAbrePar = new Stack<String>();
 		
-		String cadena = "(5+5)+(5+5)";
+		String cadena = "((5+5)+(5+5))";
 
 		if(verificarSimbolos(cadena, pilaAbrePar)) {
 			System.out.println(MSG_OK);
@@ -26,20 +26,31 @@ public static final String MSG_ERR = "Los simbolos no se encuentran equilibrados
 	
 	public static boolean verificarSimbolos(String cadena, Stack<String> pilaAbrePar) {
 		boolean cadenaCorrecta = false;
+		int i = 0;
+		int j = 1;
 		
-		for(int i = 0, j = 1; i < cadena.length() && j < cadena.length()+1; i++, j++) {
+		for(; i < cadena.length() && j < cadena.length()+1; i++, j++) {
 			String caracter = cadena.substring(i,j);
 			if(caracter.equals(ABRE_PAR)) {
 				pilaAbrePar.push(caracter);
 					System.out.println("La pila tiene: " + pilaAbrePar.toString());
-			}else if(caracter.equals(CIERRA_PAR)) {
-				pilaAbrePar.pop();
-					System.out.println("La pila tiene: " + pilaAbrePar.toString());
-			}else {}
-		}if(pilaAbrePar.isEmpty()) {
-			cadenaCorrecta = true;
+			} else if(caracter.equals(CIERRA_PAR)) {
+				if(!pilaAbrePar.isEmpty()) {
+					pilaAbrePar.pop();
+						System.out.println("La pila tiene: " + pilaAbrePar.toString());
+				} else {
+					break;
+				}
+			}
 		}
-	return cadenaCorrecta;	
+		
+		if(i == cadena.length()) {
+			if(pilaAbrePar.isEmpty()) {
+				cadenaCorrecta = true;
+			}
+		}
+		
+		return cadenaCorrecta;	
 	}
 
 }

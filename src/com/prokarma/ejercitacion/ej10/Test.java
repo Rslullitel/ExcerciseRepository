@@ -1,7 +1,6 @@
 package com.prokarma.ejercitacion.ej10;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class Test {
@@ -10,9 +9,7 @@ public class Test {
 		// TODO Auto-generated method stub
 
 		//WORK IN PROGRESS
-		
-		Grafo grafo = new Grafo();
-		Map<Nodo, Arista> mapa = new HashMap<Nodo, Arista>();
+		Map<Integer, Nodo> mapa = new HashMap<Integer, Nodo>();
 		
 		Nodo n1 = new Nodo(1);
 		Nodo n2 = new Nodo(2);
@@ -21,12 +18,12 @@ public class Test {
 		Nodo n5 = new Nodo(5);
 		
 		Arista a1 = new Arista(1, 2);
-		Arista a2 = new Arista(1, 3);
-		Arista a3 = new Arista(2, 3);
-		Arista a4 = new Arista(2, 4);
-		Arista a5 = new Arista(3, 4);
-		Arista a6 = new Arista(3, 5);
-		Arista a7 = new Arista(4, 5);
+		Arista a2 = new Arista(2, 3);
+		Arista a3 = new Arista(3, 3);
+		Arista a4 = new Arista(4, 4);
+		Arista a5 = new Arista(5, 4);
+		Arista a6 = new Arista(6, 5);
+		Arista a7 = new Arista(7, 5);
 		
 		n1.getAristas().add(a1);
 		n1.getAristas().add(a2);
@@ -36,10 +33,20 @@ public class Test {
 		n3.getAristas().add(a6);
 		n4.getAristas().add(a7);
 	
-		Iterator it = mapa.keySet().iterator();
-		while(it.hasNext()){
-		  Integer key = (Integer) it.next();
-		  System.out.println("Nodo: " + key + " -> Arista: " + mapa.get(key));
+		mapa.put(1, n1);
+		mapa.put(2, n2);
+		mapa.put(3, n3);
+		mapa.put(4, n4);
+		mapa.put(5, n5);
+		
+		
+		for(Map.Entry<Integer, Nodo> variable : mapa.entrySet()) {
+			
+			Integer clave = variable.getKey();
+			Nodo valor = variable.getValue();
+			
+			System.out.println("Clave: " + clave + ", Valor: " + valor);
+			
 		}
 		
 		

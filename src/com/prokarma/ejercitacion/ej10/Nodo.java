@@ -26,5 +26,9 @@ public class Nodo {
 	}
 	
 	
+	public String toString() {
+		return "Id: " + this.id + 
+			   ", Aristas: " + this.aristas.toString();
+	}
 	
 }
