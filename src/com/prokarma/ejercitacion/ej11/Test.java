@@ -14,7 +14,7 @@ public static final String MSG_ERR = "Los simbolos no se encuentran equilibrados
 
 		Stack<String> pilaAbrePar = new Stack<String>();
 		
-		String cadena = "((5+5)+(5+5))";
+		String cadena = "((5+5)*(5+5))";
 
 		if(verificarSimbolos(cadena, pilaAbrePar)) {
 			System.out.println(MSG_OK);
@@ -26,6 +26,8 @@ public static final String MSG_ERR = "Los simbolos no se encuentran equilibrados
 	
 	public static boolean verificarSimbolos(String cadena, Stack<String> pilaAbrePar) {
 		boolean cadenaCorrecta = false;
+		int contParAbre = 0;
+		int contParCierra = 0;
 		int i = 0;
 		int j = 1;
 		
@@ -33,17 +35,20 @@ public static final String MSG_ERR = "Los simbolos no se encuentran equilibrados
 			String caracter = cadena.substring(i,j);
 			if(caracter.equals(ABRE_PAR)) {
 				pilaAbrePar.push(caracter);
+				contParAbre++;
 					System.out.println("La pila tiene: " + pilaAbrePar.toString());
 			} else if(caracter.equals(CIERRA_PAR)) {
 				if(!pilaAbrePar.isEmpty()) {
 					pilaAbrePar.pop();
+					contParCierra++;
 						System.out.println("La pila tiene: " + pilaAbrePar.toString());
 				} else {
 					break;
 				}
 			}
 		}
-		
+		System.out.println(contParAbre);
+		System.out.println(contParCierra);
 		if(i == cadena.length()) {
 			if(pilaAbrePar.isEmpty()) {
 				cadenaCorrecta = true;

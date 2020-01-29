@@ -4,10 +4,20 @@ public class Arista {
 
 	private int id;
 	private int idNext;
+	private int idPrevious;
 	
-	public Arista(int id, int idNext) {
+	public Arista(int id, int idNext, int idPrevious) {
 		this.id = id;
 		this.idNext = idNext;
+		this.idPrevious = idPrevious;
+	}
+
+	public int getIdPrevious() {
+		return idPrevious;
+	}
+
+	public void setIdPrevious(int idPrevious) {
+		this.idPrevious = idPrevious;
 	}
 
 	public int getId() {
@@ -25,7 +35,8 @@ public class Arista {
 	
 	
 	public String toString() {
-		return " Id: " + this.id + 
+		return " IdArista: " + this.id + 
+			   ", IdPreviousNodo: " + this.idPrevious +
 			   ", IdNextNodo: " + this.idNext;
 	}
 	

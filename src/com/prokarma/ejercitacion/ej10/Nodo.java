@@ -1,15 +1,16 @@
 package com.prokarma.ejercitacion.ej10;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Nodo {
 
 	private int id;
-	private ArrayList<Arista> aristas;
+	private List<Arista> aristas;
 	
 	public Nodo(int id) {
 		this.id = id;
-		aristas = new ArrayList<Arista>();
+		this.aristas = new ArrayList<Arista>();
 	}
 
 	public int getId() {
@@ -18,16 +19,19 @@ public class Nodo {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public ArrayList<Arista> getAristas() {
+	public List<Arista> getAristas() {
 		return aristas;
 	}
 	public void setAristas(ArrayList<Arista> aristas) {
 		this.aristas = aristas;
 	}
 	
+	public void addArista(Arista a) {
+		this.aristas.add(a);
+	}
 	
 	public String toString() {
-		return "Id: " + this.id + 
+		return "IdNodo: " + this.id + 
 			   ", Aristas: " + this.aristas.toString();
 	}
 	

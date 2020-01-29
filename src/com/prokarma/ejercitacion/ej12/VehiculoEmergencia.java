@@ -8,7 +8,6 @@ public abstract class VehiculoEmergencia extends Vehiculo{
 		
 	}
 
-	
 	public static int getPagoPeaje() {
 		return PAGO_PEAJE;
 	}

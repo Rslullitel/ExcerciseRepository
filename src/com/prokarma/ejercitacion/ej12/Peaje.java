@@ -1,17 +1,27 @@
 package com.prokarma.ejercitacion.ej12;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+
 public class Peaje {
 
+	private static Peaje peaje;
 	private int gananciaTotal;
 	private Queue<Vehiculo> vehiculos;
 	
 	
-	public Peaje() {
+	private Peaje() {
 		this.vehiculos = new LinkedList<Vehiculo>();
+	}
+	
+	public static Peaje getSingletonInstance() {
+		if(peaje == null) {
+			peaje = new Peaje();
+		}else {
+				System.out.println("No se pueden crear dos instancias del mismo objeto");
+		}
+		return peaje;
 	}
 
 
@@ -29,10 +39,8 @@ public class Peaje {
 		this.vehiculos = vehiculos;
 	}
 	
-	public void generarColaVehiculos(ArrayList<Vehiculo> l_vehiculos){
-		for(Vehiculo v : l_vehiculos) {
-			this.vehiculos.add(v);
-		}
+	public void generarColaVehiculos(Vehiculo vehiculo){
+			this.vehiculos.add(vehiculo);
 	}
 	
 	public int simularPeaje() {
@@ -58,6 +66,9 @@ public class Peaje {
 						System.out.println("Debe pagar: " + Camion.getPagoPeaje());
 					gananciaTotal += Camion.getPagoPeaje();
 				}
+			if(!this.vehiculos.isEmpty()) {
+				break;
+			}
 		}
 	return gananciaTotal;
 	}
