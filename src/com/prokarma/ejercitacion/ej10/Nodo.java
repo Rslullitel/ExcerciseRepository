@@ -1,16 +1,16 @@
 package com.prokarma.ejercitacion.ej10;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Nodo {
 
 	private int id;
-	private List<Arista> aristas;
+	private Set<Arista> aristas;
 	
 	public Nodo(int id) {
 		this.id = id;
-		this.aristas = new ArrayList<Arista>();
+		this.aristas = new HashSet<Arista>();
 	}
 
 	public int getId() {
@@ -19,10 +19,10 @@ public class Nodo {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public List<Arista> getAristas() {
+	public Set<Arista> getAristas() {
 		return aristas;
 	}
-	public void setAristas(ArrayList<Arista> aristas) {
+	public void setAristas(Set<Arista> aristas) {
 		this.aristas = aristas;
 	}
 	

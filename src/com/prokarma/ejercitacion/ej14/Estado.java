@@ -1,9 +1,14 @@
 package com.prokarma.ejercitacion.ej14;
 
-public enum Estado {
+import com.prokarma.ejercitacion.ej14.exceptions.CuentaBloqueadaException;
+import com.prokarma.ejercitacion.ej14.exceptions.SinSaldoException;
 
-	ACTIVA,
-	SIN_SALDO,
-	BLOQUEADA,
+public interface Estado {
+
+
+	public double retirarDinero() throws SinSaldoException, CuentaBloqueadaException;
 	
+	public void depositarDinero() throws CuentaBloqueadaException;
+	
+	public String mostrarEstado();
 }

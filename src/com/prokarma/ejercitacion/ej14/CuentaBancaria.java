@@ -8,14 +8,12 @@ public class CuentaBancaria implements OperacionesBancarias{
 	private double saldo;
 	private Estado estado;
 	private double cantIntentos;
+	private int codigo;
 	
-	public CuentaBancaria(double saldo) {
+	public CuentaBancaria(double saldo, int codigo) {
 		this.saldo = saldo;
-		if(saldo > 0) {
-			this.estado = Estado.ACTIVA;
-		}else {
-			this.estado = Estado.SIN_SALDO;
-		}
+		this.codigo = codigo;
+		this.estado = new EstadoActiva();
 	}
 	
 	
@@ -23,20 +21,19 @@ public class CuentaBancaria implements OperacionesBancarias{
 		double dineroRetirado = 0;
 		
 		if(cantIntentos != MAX_TRY) {
-			if(this.estado.equals(Estado.ACTIVA)) {
+			if(this.estado instanceof EstadoActiva) {
 				if(cantRetirar <= this.saldo && cantRetirar != 0) {
 					this.saldo -= cantRetirar;
 					dineroRetirado = cantRetirar;
 				}else if(this.saldo == 0) {
 					this.sinSaldo();
-						throw new SinSaldoException(MSG_ERR_1);
 				}else {
 					cantIntentos++;
 						System.out.println(MSG_ERR_3);
 				}
-			}else if(this.estado.equals(Estado.BLOQUEADA)) {
-				throw new CuentaBloqueadaException(MSG_ERR_2);
-			}
+			}else if(this.estado instanceof EstadoBloqueada) {
+				this.estado.retirarDinero();
+			}	
 		}else {
 			this.bloquear();
 			cantIntentos = 0;
@@ -46,35 +43,53 @@ public class CuentaBancaria implements OperacionesBancarias{
 	
 	public void depositarDinero(double cantDeposit) throws CuentaBloqueadaException{
 		
-		if(this.estado.equals(Estado.BLOQUEADA)) {
-			throw new CuentaBloqueadaException(MSG_ERR_2);
+		if(this.estado instanceof EstadoBloqueada) {
+			estado.depositarDinero();
 		}else {
 			this.saldo += cantDeposit;
+			this.mostrarEstado();
 		}
-		this.mostrarSaldo();
 	}
 	
-	public void desbloquear() {
-		this.activar();
+	public boolean desbloquear(int codigo) {
+		if(codigo == this.codigo) {
+			this.activar();
+			return true;
+		}else {
+			return false;
+		}
+		
 	}
 	
 	@Override
 	public void activar() {
-		this.estado = Estado.ACTIVA;
+		this.estado = new EstadoActiva();
 	}
 
 	@Override
 	public void sinSaldo() {
-		this.estado = Estado.SIN_SALDO;
+		this.estado = new EstadoSinSaldo();
 	}
 
 	@Override
 	public void bloquear() {
-		this.estado = Estado.BLOQUEADA;
-
+		this.estado = new EstadoBloqueada();
 	}
 	
 
+	
+	public double getCantIntentos() {
+		return cantIntentos;
+	}
+	public void setCantIntentos(double cantIntentos) {
+		this.cantIntentos = cantIntentos;
+	}
+	public int getCodigo() {
+		return codigo;
+	}
+	public void setCodigo(int codigo) {
+		this.codigo = codigo;
+	}
 	public double getSaldo() {
 		return saldo;
 	}
@@ -88,10 +103,9 @@ public class CuentaBancaria implements OperacionesBancarias{
 		this.estado = estado;
 	}
 	
-	
-	public String mostrarSaldo() {
-		return "Estado de cuenta: " + this.estado + 
-			   ", Saldo de la cuenta: " + this.saldo;
+	public String mostrarEstado() {
+		return "Estado de la Cuenta: " + this.estado.mostrarEstado() + 
+			   " Saldo: " + this.saldo;
 	}
 	
 }

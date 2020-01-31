@@ -37,19 +37,26 @@ public class Grafo {
 	
 	public void createArista(int idOrigen, int idDestino) {
 		int i = 0;
+		int j = 0;
 		int idArista = this.idLastArista;
 		
-		while(idDestino != this.nodos.get(i).getId() && i < this.nodos.size()) {
+		while(idOrigen != this.nodos.get(i).getId() && i < this.nodos.size()) {
 			i++;
 		}
 		if(i < this.nodos.size()) {
-			Nodo nodo = this.nodos.get(i);
-			Arista arista = new Arista(idArista++, nodo.getId(), idOrigen);
-			this.idLastArista = idArista;
-			this.nodos.get(idOrigen).addArista(arista);
+			while(idDestino != this.nodos.get(j).getId() && j < this.nodos.size()) {
+				j++;
+			}
 		}
-				System.out.println(this.nodos.get(idOrigen).toString());
+		if(i < this.nodos.size() || j < this.nodos.size()) {
+			Arista arista = new Arista(idArista++, idOrigen);
+			Arista arista1 = new Arista(idArista++, idDestino);
+			this.idLastArista = idArista;
+			Nodo nodo = this.nodos.get(i);
+			Nodo nodo1 = this.nodos.get(j);
+			nodo.addArista(arista1);
+			nodo1.addArista(arista);
+		}
 	}
-
 
 }

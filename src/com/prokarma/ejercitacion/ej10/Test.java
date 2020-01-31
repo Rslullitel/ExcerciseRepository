@@ -28,9 +28,9 @@ public class Test {
 		g.createArista(n3.getId(), n4.getId());
 		g.createArista(n4.getId(), n5.getId());
 		
-		
-	
-		
+		for(Nodo n : g.getNodos()) {
+			System.out.println(n.toString());
+		}
 	}
 
 }

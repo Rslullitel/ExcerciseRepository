@@ -26,6 +26,8 @@ public class Test {
 	public static void readFile(FileReader file, FileOutputStream fop) throws IOException {
 		
 		try {
+			Vocal vocal = new Vocal();
+			Consonante consonante = new Consonante();
 			file = new FileReader(FILE_READ_ADRESS);
 			fop = new FileOutputStream(FILE_WRITE_ADRESS);
 			int character = file.read();
@@ -34,11 +36,9 @@ public class Test {
 				character = file.read();	
 				char letter = (char) character;
 				if(letter == 'a' || letter == 'e' || letter == 'i' || letter == 'o' || letter == 'u') {
-					letter = Character.toUpperCase(letter);
-					fop.write(letter);
+					fop.write(vocal.convertir(letter));
 				}else {
-					letter = Character.toLowerCase(letter);
-					fop.write(letter);
+					fop.write(consonante.convertir(letter));
 				}
 			}
 		} catch (IOException e) {
