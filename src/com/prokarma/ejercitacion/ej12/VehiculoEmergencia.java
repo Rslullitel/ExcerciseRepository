@@ -5,6 +5,7 @@ public abstract class VehiculoEmergencia extends Vehiculo{
 	
 	public VehiculoEmergencia() {
 		this.tarifa = 0;
+		this.id = -1;
 	}
 
 	

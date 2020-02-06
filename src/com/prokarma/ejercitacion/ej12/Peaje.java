@@ -7,7 +7,7 @@ import java.util.Queue;
 public class Peaje {
 
 	private static Peaje peaje;
-	private static int gananciaTotal;
+	private int gananciaTotal;
 	private Queue<Vehiculo> vehiculos;
 	
 	
@@ -25,11 +25,11 @@ public class Peaje {
 	}
 
 
-	public static int getGananciaTotal() {
+	public int getGananciaTotal() {
 		return gananciaTotal;
 	}
-	public static void setGananciaTotal(int gananciaTotal) {
-		Peaje.gananciaTotal = gananciaTotal;
+	public void setGananciaTotal(int gananciaTotal) {
+		this.gananciaTotal = gananciaTotal;
 	}
 	public Queue<Vehiculo> getVehiculos() {
 		return vehiculos;
@@ -47,24 +47,12 @@ public class Peaje {
 		
 		while(!this.vehiculos.isEmpty()) {
 			vehiculo = this.vehiculos.remove();
-			if(vehiculo instanceof VehiculoEmergencia) {
-					System.out.println("\nHa ingresado un " + vehiculo.toString() + "\nPor lo tanto se vaciara la cola de vehiculos");
-				vaciar();
-			}else {
 				System.out.println("");	
-					System.out.println(vehiculo.toString());
-					System.out.println("Debe pagar: " + vehiculo.getTarifa());
-					gananciaTotal += vehiculo.getTarifa();
-			}		
-				if(!this.vehiculos.isEmpty()) {
-					break;
-				}	
-		}
-	}
-
-	private void vaciar() {	
-		while(!this.vehiculos.isEmpty()) {
-			vehiculos.poll();
+				System.out.println(vehiculo.toString() + " debe pagar: " + vehiculo.getTarifa());
+			gananciaTotal += vehiculo.getTarifa();	
+			if(!this.vehiculos.isEmpty()) {
+				break;
+			}	
 		}
 	}
 	

@@ -12,10 +12,17 @@ public class GeneradorVehiculos extends Thread{
 		 double n2 = rand2.nextDouble();
 		 if (n2 >= 0.2){
 			 Vehiculo vehNuevo = crearVehiculo();
+			 if(vehNuevo instanceof VehiculoEmergencia) {
+				 	System.out.println("\nHa ingresado un " + vehNuevo.toString() + "\nPor lo tanto se vaciara la cola de vehiculos");
+				 peaje.generarColaVehiculos(vehNuevo);
+				 System.out.println(peaje.getVehiculos());
+				 vaciar(vehNuevo);
+			 }else {
 		     peaje.generarColaVehiculos(vehNuevo);
-		    }else {
-		        System.out.println("no hay vehiculos !");
-		    }
+			 }
+		 }else {
+		     System.out.println("no hay vehiculos !");
+		 }
 	}
 	
 	public Vehiculo crearVehiculo (){
@@ -46,6 +53,13 @@ public class GeneradorVehiculos extends Thread{
 	            break;
 	    }
 	    return vehiculo;
+	}
+	
+	private void vaciar(Vehiculo vehiculo) {	
+		while(peaje.getVehiculos().peek().getId() != -1) {
+			peaje.getVehiculos().poll();
+		}
+		peaje.getVehiculos().poll();
 	}
 
 	

@@ -8,24 +8,27 @@ public class Test {
 
 		int minutos;
 		int segundos;
+		int segun2;
 		
+		Peaje peaje = Peaje.getSingletonInstance();
 		GeneradorVehiculos gv = new GeneradorVehiculos();
 		GeneradorPeaje gp = new GeneradorPeaje();
-		for(minutos = 0; minutos < 5; minutos++) {
+		for(minutos = 0; minutos < 1; minutos++) {
 			for(segundos = 0; segundos < 60; segundos++) {
-				gv.run();
+				for(segun2 = 0; segun2 < 2; segun2++) {
+					gv.run();
+				}
 				gp.run();
 				temporizador();
 			}
 		}
-		System.out.println("\nla ganacia total es: " + Peaje.getGananciaTotal());
+		System.out.println("\nla ganacia total es: " + peaje.getGananciaTotal());
 	}
 	
 	public static void temporizador() {
 		try {
 			Thread.sleep(1000);
 		}catch(InterruptedException e) {
-			
 		}
 	}
 

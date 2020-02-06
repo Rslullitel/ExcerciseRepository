@@ -105,6 +105,7 @@ public class Grafo {
 		}
 	}
 	
+	
 	public void createAristaMap(int idOrigen, int idDestino) {
 		int idArista = this.idLastArista;
 		
