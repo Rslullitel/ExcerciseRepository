@@ -1,6 +1,6 @@
 package com.prokarma.ejercitacion.ej10;
 
-import java.util.ArrayList;
+import java.util.Map;
 
 public class Test {
 
@@ -8,48 +8,76 @@ public class Test {
 		// TODO Auto-generated method stub
 
 		//WORK IN PROGRESS
-		Grafo g = new Grafo(new ArrayList<Nodo>());
+		Grafo g = new Grafo();
+				
+		Nodo n1 = new Nodo(1, "www.google.com");
+		Nodo n2 = new Nodo(2, "www.youtube.com");
+		Nodo n3 = new Nodo(3, "www.facebook.com");
+		Nodo n4 = new Nodo(4, "www.wikipedia.com");
+		Nodo n5 = new Nodo(5, "www.yahoo.com");
+		Nodo n6 = new Nodo(6, "www.minijuegos.com");
+		Nodo n7 = new Nodo(7, "www.prokarma.com");
+		Nodo n8 = new Nodo(8, "github.com");
+				
+		System.out.println("USANDO MAPAS");
+				
+		g.addMapNodo(n1);
+		g.addMapNodo(n2);
+		g.addMapNodo(n3);
+		g.addMapNodo(n4);
+		g.addMapNodo(n5);
+		g.addMapNodo(n6);
+		g.addMapNodo(n7);
+		g.addMapNodo(n8);
 		
-		Nodo n1 = new Nodo(1);
-		Nodo n2 = new Nodo(2);
-		Nodo n3 = new Nodo(3);
-		Nodo n4 = new Nodo(4);
-		Nodo n5 = new Nodo(5);
+		g.createAristaMap(n1.getId(), n2.getId());
+		g.createAristaMap(n1.getId(), n3.getId());
+		g.createAristaMap(n2.getId(), n3.getId());
+		g.createAristaMap(n3.getId(), n4.getId());
+		g.createAristaMap(n4.getId(), n5.getId());
+		g.createAristaMap(n4.getId(), n6.getId());
+		g.createAristaMap(n5.getId(), n6.getId());
+		g.createAristaMap(n6.getId(), n7.getId());
+		g.createAristaMap(n7.getId(), n8.getId());
+				
+		for(Map.Entry<Integer, Nodo> variable : g.getMapNodo().entrySet()) {
+					
+			Integer clave = variable.getKey();
+			Nodo valor = variable.getValue();
+					
+				System.out.println("Clave: " + clave + ", Valor: " + valor);
+		}
+			System.out.println("");
 		
+		g.busquedaAmplitudMap(n1);
+				
+		System.out.println("\nUSANDO LISTAS");
+	 
 		g.addNodo(n1);
 		g.addNodo(n2);
 		g.addNodo(n3);
 		g.addNodo(n4);
 		g.addNodo(n5);
-		
-		g.createArista(n1.getId(), n3.getId());
-		g.createArista(n1.getId(), n2.getId());
-		g.createArista(n2.getId(), n3.getId());
-		g.createArista(n3.getId(), n4.getId());
-		g.createArista(n4.getId(), n5.getId());
-		
+		g.addNodo(n6);
+		g.addNodo(n7);
+		g.addNodo(n8);
+				
+		g.createAristaList(n1.getId(), n2.getId());
+		g.createAristaList(n1.getId(), n3.getId());
+		g.createAristaList(n2.getId(), n3.getId());
+		g.createAristaList(n3.getId(), n4.getId());
+		g.createAristaList(n4.getId(), n5.getId());
+		g.createAristaList(n4.getId(), n6.getId());
+		g.createAristaList(n5.getId(), n6.getId());
+		g.createAristaList(n6.getId(), n7.getId());
+		g.createAristaList(n7.getId(), n8.getId());
+				
 		for(Nodo n : g.getNodos()) {
-			System.out.println(n.toString());
+				System.out.println(n.toString());
 		}
+			System.out.println(" ");
+
+		g.busquedaAmplitudList(n1);	
 	}
 
 }
-
-
-/*	
-	mapa.put(1, n1);
-	mapa.put(2, n2);
-	mapa.put(3, n3);
-	mapa.put(4, n4);
-	mapa.put(5, n5);
-	
-	
-	for(Map.Entry<Integer, Nodo> variable : mapa.entrySet()) {
-		
-		Integer clave = variable.getKey();
-		Nodo valor = variable.getValue();
-		
-		System.out.println("Clave: " + clave + ", Valor: " + valor);
-		
-	}	*/
-		

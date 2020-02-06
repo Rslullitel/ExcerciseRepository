@@ -3,11 +3,11 @@ package com.prokarma.ejercitacion.ej14;
 import com.prokarma.ejercitacion.ej14.exceptions.CuentaBloqueadaException;
 import com.prokarma.ejercitacion.ej14.exceptions.SinSaldoException;
 
-public class CuentaBancaria implements OperacionesBancarias{
+public class CuentaBancaria{
 	
 	private double saldo;
 	private Estado estado;
-	private double cantIntentos;
+	private int cantIntentos;
 	private int codigo;
 	
 	public CuentaBancaria(double saldo, int codigo) {
@@ -16,38 +16,30 @@ public class CuentaBancaria implements OperacionesBancarias{
 		this.estado = new EstadoActiva();
 	}
 	
-	
-	public double retirarDinero(double cantRetirar) throws SinSaldoException, CuentaBloqueadaException {
-		double dineroRetirado = 0;
+	public void retirarDinero(double cantRetirar) throws SinSaldoException, CuentaBloqueadaException {
 		
-		if(cantIntentos != MAX_TRY) {
-			if(this.estado instanceof EstadoActiva) {
-				if(cantRetirar <= this.saldo && cantRetirar != 0) {
-					this.saldo -= cantRetirar;
-					dineroRetirado = cantRetirar;
-				}else if(this.saldo == 0) {
-					this.sinSaldo();
-				}else {
-					cantIntentos++;
-						System.out.println(MSG_ERR_3);
-				}
-			}else if(this.estado instanceof EstadoBloqueada) {
-				this.estado.retirarDinero();
-			}	
+		if(cantIntentos != 3) {
+			if(cantRetirar <= this.saldo && cantRetirar != 0) {
+				this.saldo = this.estado.retirarDinero(this.saldo, cantRetirar);
+			}else if(this.saldo == 0) {
+				this.sinSaldo();
+			}else {
+				this.cantIntentos++;
+			}
 		}else {
 			this.bloquear();
 			cantIntentos = 0;
 		}
-		return dineroRetirado;
 	}
 	
-	public void depositarDinero(double cantDeposit) throws CuentaBloqueadaException{
-		
+	public void depositarDinero(double cantDeposit) throws CuentaBloqueadaException {
 		if(this.estado instanceof EstadoBloqueada) {
-			estado.depositarDinero();
+			throw new CuentaBloqueadaException("Su cuenta se encuentra bloqueada");
+		}else if(this.estado instanceof EstadoSinSaldo) {
+			this.activar();
+			this.saldo += cantDeposit;
 		}else {
 			this.saldo += cantDeposit;
-			this.mostrarEstado();
 		}
 	}
 	
@@ -60,20 +52,19 @@ public class CuentaBancaria implements OperacionesBancarias{
 		}
 		
 	}
-	
-	@Override
+
 	public void activar() {
 		this.estado = new EstadoActiva();
 	}
 
-	@Override
-	public void sinSaldo() {
+	public void sinSaldo() throws SinSaldoException{
 		this.estado = new EstadoSinSaldo();
+		throw new SinSaldoException("Su cuenta se ha quedado sin saldo");
 	}
 
-	@Override
-	public void bloquear() {
+	public void bloquear() throws CuentaBloqueadaException{
 		this.estado = new EstadoBloqueada();
+		throw new CuentaBloqueadaException("Su cuenta ha sido bloqueada");
 	}
 	
 
@@ -81,7 +72,7 @@ public class CuentaBancaria implements OperacionesBancarias{
 	public double getCantIntentos() {
 		return cantIntentos;
 	}
-	public void setCantIntentos(double cantIntentos) {
+	public void setCantIntentos(int cantIntentos) {
 		this.cantIntentos = cantIntentos;
 	}
 	public int getCodigo() {
@@ -104,7 +95,7 @@ public class CuentaBancaria implements OperacionesBancarias{
 	}
 	
 	public String mostrarEstado() {
-		return "Estado de la Cuenta: " + this.estado.mostrarEstado() + 
+		return "Cuenta: " + this.estado.mostrarEstado() + 
 			   " Saldo: " + this.saldo;
 	}
 	

@@ -19,15 +19,14 @@ public class Test {
 		char opcion4;
 		char opcion5;
 		int codigo = 0;
-		CuentaBancaria miCuenta = new CuentaBancaria(100, 1234);
+		CuentaBancaria miCuenta = new CuentaBancaria(1000, 1234);
 		
 		do {
-				input.nextLine();
-				System.out.println("¿Desea retirar o depositar dinero?");
-			String opcion = input.nextLine();	
+				System.out.println("Seleccione la opcion correspondiente\n1)Retirar\n2)Dpositar");
+			int opcion = input.nextInt();	
 			switch(opcion) {
 			
-			case "retirar":
+			case 1:
 				do {
 					input.nextLine();
 					System.out.println("¿Cuanto dinero desea retirar?");
@@ -48,7 +47,7 @@ public class Test {
 										System.out.println("Cuenta Desbloqueada y activada con exito");
 									}else {
 										System.out.println("Codigo incorrecto, vuelva a intentarlo mas tarde");
-										System.exit(codigo);
+										System.exit(0);
 									}
 								case 'n':
 									break;
@@ -66,9 +65,9 @@ public class Test {
 				}while(masRetiro);	
 				break;
 			
-			case "depositar":
+			case 2:
 				do {	
-						System.out.println("¿Cuanto dinero desea depositar?");
+							System.out.println("¿Cuanto dinero desea depositar?");
 					double cantDepositar = input.nextInt();
 						try {
 							miCuenta.depositarDinero(cantDepositar);
@@ -78,14 +77,18 @@ public class Test {
 								System.out.println(miCuenta.mostrarEstado());
 								
 						}
-						System.out.println("¿Desea depositar mas dinero?");
+							System.out.println("¿Desea depositar mas dinero?");
 						opcion3 = input.next().charAt(0);
-						if(opcion3 == 's') {
-							masDeposito = true;
-						}else {
-							masDeposito = false;
-						}
+							if(opcion3 == 's') {
+								masDeposito = true;
+							}else {
+								masDeposito = false;
+							}
 				}while(masDeposito);
+				break;
+				
+			default:
+					System.out.println("Ingreso incorrecto, pruebe otra vez");
 				break;
 			}
 				input.nextLine();

@@ -7,14 +7,13 @@ public class EstadoBloqueada implements Estado{
 
 
 	@Override
-	public double retirarDinero() throws SinSaldoException, CuentaBloqueadaException {
+	public double retirarDinero(double saldo, double cant) throws SinSaldoException, CuentaBloqueadaException {
 		throw new CuentaBloqueadaException("Su cuenta se encuentra bloqueada, activela para retirar dinero");
 	}
 
 	@Override
-	public void depositarDinero() throws CuentaBloqueadaException {
-		throw new CuentaBloqueadaException("Su cuenta se encuentra bloqueada, activela para depositar dinero");
-		
+	public double depositarDinero(double saldo, double cant) throws CuentaBloqueadaException {
+		throw new CuentaBloqueadaException("Su cuenta se encuentra bloqueada, activela para depositar dinero");	
 	}
 
 	@Override

@@ -2,15 +2,23 @@ package com.prokarma.ejercitacion.ej12;
 
 public class Camion extends Vehiculo{
 
-	public static final int PAGO_PEAJE = 50;
+	
+	private int tarifa;
 	
 	public Camion() {
-		
+		this.tarifa = 100;
+	}
+	
+	
+	
+	public int getTarifa() {
+		return tarifa;
+	}
+	public void setTarifa(int tarifa) {
+		this.tarifa = tarifa;
 	}
 
-	public static int getPagoPeaje() {
-		return PAGO_PEAJE;
-	}
+
 
 	@Override
 	public String toString() {

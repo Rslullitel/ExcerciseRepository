@@ -25,8 +25,8 @@ public class Arista {
 	
 	
 	public String toString() {
-		return " IdArista: " + this.id + 
-			   ", IdNextNodo: " + this.idNext;
+		return "Id: " + this.id + 
+			   ", IdNext: " + this.idNext;
 	}
 	
 }

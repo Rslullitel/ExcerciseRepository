@@ -7,7 +7,7 @@ import java.util.Queue;
 public class Peaje {
 
 	private static Peaje peaje;
-	private int gananciaTotal;
+	private static int gananciaTotal;
 	private Queue<Vehiculo> vehiculos;
 	
 	
@@ -25,12 +25,11 @@ public class Peaje {
 	}
 
 
-
-	public int getGananciaTotal() {
+	public static int getGananciaTotal() {
 		return gananciaTotal;
 	}
-	public void setGananciaTotal(int gananciaTotal) {
-		this.gananciaTotal = gananciaTotal;
+	public static void setGananciaTotal(int gananciaTotal) {
+		Peaje.gananciaTotal = gananciaTotal;
 	}
 	public Queue<Vehiculo> getVehiculos() {
 		return vehiculos;
@@ -43,34 +42,31 @@ public class Peaje {
 			this.vehiculos.add(vehiculo);
 	}
 	
-	public int simularPeaje() {
+	public void simularPeaje() {
 		Vehiculo vehiculo;
-		int gananciaTotal = 0;
 		
 		while(!this.vehiculos.isEmpty()) {
 			vehiculo = this.vehiculos.remove();
-				System.out.println("");
-			if(vehiculo instanceof VehiculoEmergencia) {		
+			if(vehiculo instanceof VehiculoEmergencia) {
+					System.out.println("\nHa ingresado un " + vehiculo.toString() + "\nPor lo tanto se vaciara la cola de vehiculos");
+				vaciar();
+			}else {
+				System.out.println("");	
 					System.out.println(vehiculo.toString());
-					System.out.println("Debe pagar: " + 0);
-				}else if(vehiculo instanceof Moto) {
-						System.out.println(vehiculo.toString());
-						System.out.println("Debe pagar: " + Moto.getPagoPeaje());
-					gananciaTotal += Moto.getPagoPeaje();
-				}else if(vehiculo instanceof Auto) {						
-						System.out.println(vehiculo.toString());
-						System.out.println("Debe pagar: " + ((Auto) vehiculo).getPagoPeaje());
-					gananciaTotal += ((Auto) vehiculo).getPagoPeaje();
-				}else if(vehiculo instanceof Camion) {
-						System.out.println(vehiculo.toString());
-						System.out.println("Debe pagar: " + Camion.getPagoPeaje());
-					gananciaTotal += Camion.getPagoPeaje();
-				}
-			if(!this.vehiculos.isEmpty()) {
-				break;
-			}
+					System.out.println("Debe pagar: " + vehiculo.getTarifa());
+					gananciaTotal += vehiculo.getTarifa();
+			}		
+				if(!this.vehiculos.isEmpty()) {
+					break;
+				}	
 		}
-	return gananciaTotal;
+	}
+
+	private void vaciar() {	
+		while(!this.vehiculos.isEmpty()) {
+			vehiculos.poll();
+		}
 	}
 	
 }
+	

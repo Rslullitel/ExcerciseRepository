@@ -7,12 +7,13 @@ public class EstadoSinSaldo implements Estado{
 
 
 	@Override
-	public double retirarDinero() throws SinSaldoException, CuentaBloqueadaException {
+	public double retirarDinero(double saldo, double cant) throws SinSaldoException, CuentaBloqueadaException {
 		throw new SinSaldoException("Su cuenta no tiene saldo");
 	}
 
 	@Override
-	public void depositarDinero() throws CuentaBloqueadaException {
+	public double depositarDinero(double saldo, double cantDeposit) throws CuentaBloqueadaException {
+		return saldo += cantDeposit;
 	}
 
 	@Override

@@ -2,15 +2,12 @@ package com.prokarma.ejercitacion.ej12;
 
 public abstract class VehiculoEmergencia extends Vehiculo{
 
-	private static final int PAGO_PEAJE = 0;
 	
 	public VehiculoEmergencia() {
-		
+		this.tarifa = 0;
 	}
 
-	public static int getPagoPeaje() {
-		return PAGO_PEAJE;
-	}
+	
 	
 	
 	

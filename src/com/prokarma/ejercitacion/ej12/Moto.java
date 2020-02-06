@@ -1,19 +1,20 @@
 package com.prokarma.ejercitacion.ej12;
 
 public class Moto extends Vehiculo{
-
-	private static final int PAGO_PEAJE = 10;
-
 	
 	public Moto() {
-		
+		this.tarifa = 10;
 	}
 
 	
-	public static int getPagoPeaje() {
-		return PAGO_PEAJE;
+	public int getTarifa() {
+		return tarifa;
 	}
-	
+	public void setTarifa(int tarifa) {
+		this.tarifa = tarifa;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Moto";
