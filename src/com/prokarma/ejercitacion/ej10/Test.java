@@ -1,13 +1,10 @@
 package com.prokarma.ejercitacion.ej10;
 
-import java.util.Map;
-
 public class Test {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		//WORK IN PROGRESS
 		Grafo g = new Grafo();
 				
 		Nodo n1 = new Nodo(1, "www.google.com");
@@ -18,40 +15,6 @@ public class Test {
 		Nodo n6 = new Nodo(6, "www.minijuegos.com");
 		Nodo n7 = new Nodo(7, "www.prokarma.com");
 		Nodo n8 = new Nodo(8, "github.com");
-				
-		System.out.println("USANDO MAPAS");
-				
-		g.addMapNodo(n1);
-		g.addMapNodo(n2);
-		g.addMapNodo(n3);
-		g.addMapNodo(n4);
-		g.addMapNodo(n5);
-		g.addMapNodo(n6);
-		g.addMapNodo(n7);
-		g.addMapNodo(n8);
-		
-		g.createAristaMap(n1.getId(), n2.getId());
-		g.createAristaMap(n1.getId(), n3.getId());
-		g.createAristaMap(n2.getId(), n3.getId());
-		g.createAristaMap(n3.getId(), n4.getId());
-		g.createAristaMap(n4.getId(), n5.getId());
-		g.createAristaMap(n4.getId(), n6.getId());
-		g.createAristaMap(n5.getId(), n6.getId());
-		g.createAristaMap(n6.getId(), n7.getId());
-		g.createAristaMap(n7.getId(), n8.getId());
-				
-		for(Map.Entry<Integer, Nodo> variable : g.getMapNodo().entrySet()) {
-					
-			Integer clave = variable.getKey();
-			Nodo valor = variable.getValue();
-					
-				System.out.println("Clave: " + clave + ", Valor: " + valor);
-		}
-			System.out.println("");
-		
-		g.busquedaAmplitudMap(n1);
-				
-		System.out.println("\nUSANDO LISTAS");
 	 
 		g.addNodo(n1);
 		g.addNodo(n2);
@@ -77,7 +40,7 @@ public class Test {
 		}
 			System.out.println(" ");
 
-		g.busquedaAmplitudList(n1);	
+		g.busquedaAmplitudList(n1);
 	}
 
 }

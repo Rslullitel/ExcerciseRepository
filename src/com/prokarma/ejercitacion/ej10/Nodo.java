@@ -7,13 +7,11 @@ public class Nodo {
 
 	private int id;
 	private String pagina;
-	private boolean visitado;
 	private List<Arista> aristas;
 	
 	public Nodo(int id, String pagina) {
 		this.id = id;
 		this.pagina = pagina;
-		this.visitado = false;
 		this.aristas = new ArrayList<Arista>();
 	}
 
@@ -24,12 +22,6 @@ public class Nodo {
 	}
 	public void setPagina(String pagina) {
 		this.pagina = pagina;
-	}
-	public boolean getVisitado() {
-		return visitado;
-	}
-	public void setVisitado(boolean visitado) {
-		this.visitado = visitado;
 	}
 	public int getId() {
 		return id;

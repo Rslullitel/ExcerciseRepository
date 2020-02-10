@@ -1,25 +1,29 @@
 package com.prokarma.ejercitacion.ej12;
 
 import java.util.Random;
+import java.util.concurrent.BlockingQueue;
 
-public class GeneradorVehiculos extends Thread{
+public class GeneradorVehiculos implements Runnable{
 	
-	private Peaje peaje = Peaje.getSingletonInstance();
+	protected BlockingQueue<Vehiculo> vehiculos;
+	
+	public GeneradorVehiculos(BlockingQueue<Vehiculo> queue) {
+		this.vehiculos = queue;
+	}
 	
 	@Override 
 	public void run() {
 		 Random rand2 = new Random();
 		 double n2 = rand2.nextDouble();
 		 if (n2 >= 0.2){
-			 Vehiculo vehNuevo = crearVehiculo();
-			 if(vehNuevo instanceof VehiculoEmergencia) {
-				 	System.out.println("\nHa ingresado un " + vehNuevo.toString() + "\nPor lo tanto se vaciara la cola de vehiculos");
-				 peaje.generarColaVehiculos(vehNuevo);
-				 System.out.println(peaje.getVehiculos());
-				 vaciar(vehNuevo);
-			 }else {
-		     peaje.generarColaVehiculos(vehNuevo);
-			 }
+				 Vehiculo vehNuevo = crearVehiculo(); 
+				 if(vehNuevo instanceof VehiculoEmergencia) {
+					 	System.out.println("\nHa ingresado un " + vehNuevo.toString() + "\nPor lo tanto se vaciara la cola de vehiculos");
+					 this.vehiculos.add(vehNuevo);
+					 vaciar(vehNuevo);
+				 }else {
+					 this.vehiculos.add(vehNuevo);
+				 }
 		 }else {
 		     System.out.println("no hay vehiculos !");
 		 }
@@ -56,10 +60,10 @@ public class GeneradorVehiculos extends Thread{
 	}
 	
 	private void vaciar(Vehiculo vehiculo) {	
-		while(peaje.getVehiculos().peek().getId() != -1) {
-			peaje.getVehiculos().poll();
+		while(this.vehiculos.peek().getId() != -1) {
+			this.vehiculos.poll();
 		}
-		peaje.getVehiculos().poll();
+		this.vehiculos.poll();
 	}
 
 	

@@ -7,13 +7,14 @@ import com.prokarma.ejercitacion.ej14.exceptions.SinSaldoException;
 
 public class Test {
 
-	private static Scanner input = new Scanner(System.in);
+	private static Scanner input = new Scanner(System.in); 
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	
 		boolean masDeposito = false;
 		boolean masRetiro = false;
 		boolean otraOperacion = false; 
+		int opcion;
 		char opcion2;
 		char opcion3;
 		char opcion4;
@@ -23,7 +24,7 @@ public class Test {
 		
 		do {
 				System.out.println("Seleccione la opcion correspondiente\n1)Retirar\n2)Dpositar");
-			int opcion = input.nextInt();	
+			opcion = input.nextInt();	
 			switch(opcion) {
 			
 			case 1:
