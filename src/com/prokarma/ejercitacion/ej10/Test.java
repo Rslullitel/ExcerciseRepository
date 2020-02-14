@@ -15,6 +15,7 @@ public class Test {
 		Nodo n6 = new Nodo(6, "www.minijuegos.com");
 		Nodo n7 = new Nodo(7, "www.prokarma.com");
 		Nodo n8 = new Nodo(8, "github.com");
+		
 	 
 		g.addNodo(n1);
 		g.addNodo(n2);
@@ -24,17 +25,15 @@ public class Test {
 		g.addNodo(n6);
 		g.addNodo(n7);
 		g.addNodo(n8);
-				
+
 		g.createAristaList(n1.getId(), n2.getId());
 		g.createAristaList(n1.getId(), n3.getId());
-		g.createAristaList(n2.getId(), n3.getId());
-		g.createAristaList(n3.getId(), n4.getId());
-		g.createAristaList(n4.getId(), n5.getId());
-		g.createAristaList(n4.getId(), n6.getId());
-		g.createAristaList(n5.getId(), n6.getId());
-		g.createAristaList(n6.getId(), n7.getId());
+		g.createAristaList(n2.getId(), n4.getId());
+		g.createAristaList(n2.getId(), n5.getId());
+		g.createAristaList(n3.getId(), n6.getId());
+		g.createAristaList(n3.getId(), n7.getId());
 		g.createAristaList(n7.getId(), n8.getId());
-				
+		
 		for(Nodo n : g.getNodos()) {
 				System.out.println(n.toString());
 		}

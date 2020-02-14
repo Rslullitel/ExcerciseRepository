@@ -65,25 +65,27 @@ public class Grafo {
 	public void busquedaAmplitudList(Nodo nodoRaiz) {
 		int idNextNodo = 0;
 		Queue<Nodo> colaNodos = new LinkedList<Nodo>();
-		Map<Integer, String> mapNodo = new HashMap<Integer, String>();
+		Map<Integer, Nodo> mapNodo = new HashMap<Integer, Nodo>();
 		Nodo nodo;
 		Nodo nodoNext;
 		colaNodos.add(nodoRaiz);
 		
 		while(!colaNodos.isEmpty()) {
 			nodo = colaNodos.poll();// saco el primer nodo
-				System.out.println("Se conecto a la pagina: " + nodo.getPagina());
-			for(int i = 0; i < nodo.getAristas().size(); i++) {
-				idNextNodo = nodo.getAristas().get(i).getIdNext();// obtengo el id next nodo 
-				nodoNext = this.nodos.get(idNextNodo-1); // obtengo el next nodo
-				if(nodoNext.getId()-1 == nodo.getId()) {
-					System.out.println("Sera redirigido a la siguiente pagina: " + nodoNext.getPagina());
-				}
-					if(!mapNodo.containsKey(nodoNext.getId())) {
-						mapNodo.put(nodoNext.getId(), nodoNext.getPagina());
-						colaNodos.add(nodoNext);// agrego next nodo a la cola 
+			if(!mapNodo.containsKey(nodo.getId())) {
+				mapNodo.put(nodo.getId(), nodo);
+					System.out.println("Nodo: " + nodo.toString());
+				for(int i = 0; i < nodo.getAristas().size(); i++) {
+					idNextNodo = nodo.getAristas().get(i).getIdNext();// obtengo el id next nodo 
+					nodoNext = this.nodos.get(idNextNodo-1); // obtengo el next nodo
+					if(nodoNext.getId()-1 == nodo.getId()) {
+						System.out.println("Sera redirigido a la siguiente pagina: " + nodoNext.getPagina());
 					}
+						colaNodos.add(nodoNext);// agrego next nodo a la cola 
+				}
+			}else {
+				System.out.println("Ya vi el nodo: " + nodo.getId());
 			}
 		}
 	}
-}
+}	
