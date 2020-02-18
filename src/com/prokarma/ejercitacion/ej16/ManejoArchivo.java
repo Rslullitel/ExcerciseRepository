@@ -13,8 +13,9 @@ import java.util.List;
 
 public class ManejoArchivo {
 
-	private static final String LOG_ADRESS = "C:/Users/LoggerFacebook/facebook_log_" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + "_" +
-																					   new SimpleDateFormat("HH.mm.ss").format(new Date()) + ".log";
+	private static final String LOG_ADRESS = "C:/Users/LoggerFacebook/facebook_log_" +
+											 new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + "_" +
+											 new SimpleDateFormat("HH.mm.ss").format(new Date()) + ".log";
 	
 	private List<Usuario> usuariosLeidos;
 	private CreadorUsuario creador;
@@ -30,7 +31,15 @@ public class ManejoArchivo {
 		}
 	}
 	
+	public void cerrarFop() {
+		try {
+			this.fop.close();
+		} catch (IOException e) {
+			System.out.println("Error al cerrar el recruso");
+		}
+	}
 	
+
 	public List<Usuario> leerCSV(File archivo){
 		String linea = "";
 		String[] datos;
@@ -56,6 +65,7 @@ public class ManejoArchivo {
 	public void escribirLog(Logger logger) {
 		try{
 			fop.write(logger.getMensaje().getBytes());
+			fop.write("\n".getBytes());
 		}catch(IOException e) {
 			System.out.println("Archivo no encontrado");
 		}

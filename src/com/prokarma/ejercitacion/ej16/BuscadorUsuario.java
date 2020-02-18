@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-import com.prokarma.ejercitacion.ej16.exceptions.UserNotFoundException;
+import com.prokarma.ejercitacion.ej16.exceptions.UsuarioNoEncontradoException;
 
 public class BuscadorUsuario {
 
@@ -20,6 +20,12 @@ public class BuscadorUsuario {
 	}
 
 	
+	public ManejoArchivo getLector() {
+		return lector;
+	}
+	public void setLector(ManejoArchivo lector) {
+		this.lector = lector;
+	}
 	public Logger getLogger() {
 		return logger;
 	}
@@ -43,7 +49,7 @@ public class BuscadorUsuario {
 	}
 	
 	
-	public Usuario busquedaAmplitud(String nombre) throws UserNotFoundException{
+	public Usuario busquedaAmplitud(String nombre) throws UsuarioNoEncontradoException{
 		int idNextNodo = 0;
 		Queue<NodoUsuario> colaNodos = new LinkedList<NodoUsuario>();
 		Map<Integer, NodoUsuario> mapNodo = new HashMap<Integer, NodoUsuario>();
@@ -67,13 +73,13 @@ public class BuscadorUsuario {
 					}
 				}else {
 					nodoEncontrado = nodo;
-					this.logger.setMensaje("Se encontro el nodo buscado:\n" + nodoEncontrado.getUsuario().toString());
+					this.logger.setMensaje("Nodo buscado:\n" + nodoEncontrado.getUsuario().toString());
 					lector.escribirLog(logger);
 				}
 			}
 		}
 		if(!nodo.getUsuario().getNombre().equalsIgnoreCase(nombre)) {
-			throw new UserNotFoundException("No se ha encontrado el usuario que buscaba");
+			throw new UsuarioNoEncontradoException("No se ha encontrado el usuario que buscaba");
 		}
 	return nodoEncontrado.getUsuario();	
 	}

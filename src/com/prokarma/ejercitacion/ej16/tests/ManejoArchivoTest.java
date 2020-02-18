@@ -4,11 +4,13 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class LectorArchivoTest {
+public class ManejoArchivoTest {
 
 	@Test
 	public void test() {
 		fail("Not yet implemented");
 	}
+	
+	
 
 }
