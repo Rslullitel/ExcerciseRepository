@@ -9,18 +9,39 @@ import com.prokarma.ejercitacion.ej16.exceptions.UserNotFoundException;
 
 public class BuscadorUsuario {
 
+	private ManejoArchivo lector;
 	private GrafoUsuario grafo;
+	private Logger logger;
 	
-	public BuscadorUsuario(GrafoUsuario grafo) {
-		this.grafo = grafo;
+	public BuscadorUsuario(Logger logger, ManejoArchivo lector) {
+		this.logger = logger;
+		this.grafo = new GrafoUsuario();
+		this.lector = lector;
 	}
 
+	
+	public Logger getLogger() {
+		return logger;
+	}
+	public void setLogger(Logger logger) {
+		this.logger = logger;
+	}
 	public GrafoUsuario getGrafo() {
 		return grafo;
 	}
 	public void setGrafo(GrafoUsuario grafo) {
 		this.grafo = grafo;
 	}
+	
+	
+	public void crearAristas() {
+		this.grafo.createAristaList();
+	}
+	
+	public void agregarNodo(NodoUsuario miNodo) {
+		this.grafo.getNodos().add(miNodo);
+	}
+	
 	
 	public Usuario busquedaAmplitud(String nombre) throws UserNotFoundException{
 		int idNextNodo = 0;
@@ -30,6 +51,9 @@ public class BuscadorUsuario {
 		NodoUsuario nodoNext;
 		NodoUsuario nodoEncontrado = null;
 		colaNodos.add(this.grafo.getNodos().get(0));
+		
+		this.logger.setMensaje("-- Se busco al usuario " + nombre + " --");
+		lector.escribirLog(logger);
 		
 		while(!colaNodos.isEmpty() && nodoEncontrado == null) {
 			nodo = colaNodos.poll();// saco el primer nodo
@@ -43,6 +67,8 @@ public class BuscadorUsuario {
 					}
 				}else {
 					nodoEncontrado = nodo;
+					this.logger.setMensaje("Se encontro el nodo buscado:\n" + nodoEncontrado.getUsuario().toString());
+					lector.escribirLog(logger);
 				}
 			}
 		}

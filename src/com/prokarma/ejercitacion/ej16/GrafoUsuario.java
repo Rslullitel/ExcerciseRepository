@@ -6,7 +6,7 @@ import java.util.List;
 public class GrafoUsuario {
 
 	private List<NodoUsuario> nodos;
-	private int idLastArista;
+	private int idLastArista = 0;
 	
 	public GrafoUsuario() {
 		this.nodos = new ArrayList<NodoUsuario>();
@@ -26,7 +26,6 @@ public class GrafoUsuario {
 
 	
 	public void createAristaList() {
-		int idArista = this.idLastArista;
 		int idNextNodo;
 		AristaUsuario arista;
 		AristaUsuario aristaBi;
@@ -37,10 +36,10 @@ public class GrafoUsuario {
 			nodo = this.nodos.get(i);
 			for(int j = 0; j < nodo.getUsuario().getAmigos().size(); j++) {
 				idNextNodo = nodo.getUsuario().getAmigos().get(j);
-				arista = new AristaUsuario(idArista++, idNextNodo);
+				arista = new AristaUsuario(this.idLastArista++, idNextNodo);
 				nodoBi = this.nodos.get(idNextNodo-1);
 					if(nodoBi.getId() == idNextNodo) {
-						aristaBi = new AristaUsuario(idArista++, nodo.getId());
+						aristaBi = new AristaUsuario(this.idLastArista++, nodo.getId());
 						nodoBi.getAristas().add(aristaBi);
 					}else {
 
@@ -48,7 +47,6 @@ public class GrafoUsuario {
 				nodo.addArista(arista);
 			}
 		}
-		this.idLastArista = idArista;
 	}
 	
 	

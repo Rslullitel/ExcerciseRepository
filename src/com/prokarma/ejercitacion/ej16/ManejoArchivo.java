@@ -2,22 +2,32 @@ package com.prokarma.ejercitacion.ej16;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ManejoArchivo {
 
-	private static final String LOG_ADRESS = "C:/Users/LoggerFacebook/Logger.txt";
+	private static final String LOG_ADRESS = "C:/Users/LoggerFacebook/facebook_log_" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + "_" +
+																					   new SimpleDateFormat("HH.mm.ss").format(new Date()) + ".log";
 	
 	private List<Usuario> usuariosLeidos;
 	private CreadorUsuario creador;
+	private FileOutputStream fop;
 	
 	public ManejoArchivo() {
 		this.usuariosLeidos = new ArrayList<Usuario>();
-		creador = new CreadorUsuario();
+		this.creador = new CreadorUsuario();
+		try {
+			fop = new FileOutputStream(LOG_ADRESS);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	
@@ -44,9 +54,7 @@ public class ManejoArchivo {
 	
 	
 	public void escribirLog(Logger logger) {
-		try(FileOutputStream fop  = new FileOutputStream(LOG_ADRESS);){
-			fop.write(logger.getNOMBRE_LOG().getBytes());
-			fop.write("\n".getBytes());
+		try{
 			fop.write(logger.getMensaje().getBytes());
 		}catch(IOException e) {
 			System.out.println("Archivo no encontrado");
