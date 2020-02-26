@@ -9,21 +9,13 @@ public class AristaUsuario {
 		this.id = id;
 		this.idNext = idNext;
 	}
-
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
+	
 	public int getIdNext() {
-		return idNext;
-	}
-	public void setIdNext(int idNext) {
-		this.idNext = idNext;
+		return this.idNext;
 	}
 	
 	public String toString() {
-		return " IdNext: " + this.idNext;
+		return  "Id: " + this.id + 
+				" IdNext: " + this.idNext;
 	}
 }

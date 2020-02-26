@@ -6,70 +6,65 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class ManejoArchivo {
+public class ManejoArchivo { 
 
-	private static final String LOG_ADRESS = "C:/Users/LoggerFacebook/facebook_log_" +
-											 new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + "_" +
-											 new SimpleDateFormat("HH.mm.ss").format(new Date()) + ".log";
-	
-	private List<Usuario> usuariosLeidos;
-	private CreadorUsuario creador;
+	private File lector;
 	private FileOutputStream fop;
 	
-	public ManejoArchivo() {
-		this.usuariosLeidos = new ArrayList<Usuario>();
-		this.creador = new CreadorUsuario();
-		try {
-			fop = new FileOutputStream(LOG_ADRESS);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+	public ManejoArchivo(String direccionLectura, String direccionEscritura) {
+		if(direccionLectura != null) {
+			this.lector = new File(direccionLectura);
+		}
+		if(direccionEscritura != null) {
+			try {
+				this.fop = new FileOutputStream(direccionEscritura);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
-	public void cerrarFop() {
-		try {
-			this.fop.close();
-		} catch (IOException e) {
-			System.out.println("Error al cerrar el recruso");
-		}
-	}
-	
-
-	public List<Usuario> leerCSV(File archivo){
+	public List<Usuario> leerCSV(){
+		List<Usuario> usuariosLeidos = new ArrayList<Usuario>();
 		String linea = "";
 		String[] datos;
 		
-		try(FileReader lectorArchivo = new FileReader(archivo);
+		try(FileReader lectorArchivo = new FileReader(lector);
 			BufferedReader buffer = new BufferedReader(lectorArchivo)){
 			
 			while(buffer.ready()) {
 				if(!(linea = buffer.readLine()).equals("/000")) {
 					datos = linea.split(";");
 					if(!datos[0].equals("id")) {
-						this.usuariosLeidos.add(creador.convertir(datos));
+						usuariosLeidos.add(CreadorUsuario.convertir(datos));
 					}
 				} 
 			}
 		}catch(IOException e) {
 			System.out.println("Error al leer el archivo");
 		}
-	return this.usuariosLeidos;	
+	return usuariosLeidos;	
 	}
+
 	
-	
-	public void escribirLog(Logger logger) {
+	public void escribir(String mensaje) {
 		try{
-			fop.write(logger.getMensaje().getBytes());
-			fop.write("\n".getBytes());
-		}catch(IOException e) {
+			fop.write(mensaje.getBytes());
+			fop.write(("\r\n").getBytes());
+		}catch(IOException e) { 
 			System.out.println("Archivo no encontrado");
 		}
 	}
-	
+	 
+	public void cerrarFop() {
+		try {
+			this.fop.close();
+		} catch (IOException e) {
+			System.out.println("Error al cerrar el recruso");
+		}
+	} 
 	
 }

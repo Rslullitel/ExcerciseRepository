@@ -28,44 +28,11 @@ public class Usuario {
 	public int getId() {
 		return id;
 	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getNombre() {
 		return nombre;
 	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	public String getNacionalidad() {
-		return nacionalidad;
-	}
-	public void setNacionalidad(String nacionalidad) {
-		this.nacionalidad = nacionalidad;
-	}
-	public int getEdad() {
-		return edad;
-	}
-	public void setEdad(int edad) {
-		this.edad = edad;
-	}
-	public String getTrabajo() {
-		return trabajo;
-	}
-	public void setTrabajo(String trabajo) {
-		this.trabajo = trabajo;
-	}
-	public String getSituacionSenti() {
-		return situacionSenti;
-	}
-	public void setSituacionSenti(String situacionSenti) {
-		this.situacionSenti = situacionSenti;
-	}
 	public List<Integer> getAmigos() {
 		return amigos;
-	}
-	public void setAmigos(List<Integer> amigos) {
-		this.amigos = amigos;
 	}
 
 	

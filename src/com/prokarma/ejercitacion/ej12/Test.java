@@ -12,7 +12,7 @@ public class Test {
 	static int gananciaTotal;
 	
 	public static void main(String[] args) {
-
+ 
 		BlockingQueue<Vehiculo> queue = new ArrayBlockingQueue<Vehiculo>(1024);
 		Tuberia tuberia = new Tuberia();
 		GeneradorVehiculos gv = new GeneradorVehiculos(queue, tuberia);

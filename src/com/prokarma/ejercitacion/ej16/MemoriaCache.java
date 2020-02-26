@@ -6,23 +6,22 @@ import java.util.Map;
 public class MemoriaCache {
 
 	private Map<String, Usuario> memoria;
-	
+	 
 	public MemoriaCache() {
 		this.memoria = new HashMap<String, Usuario>();
 	}
 	
-	public void agregarUsuario(Usuario usuario) {
-		this.memoria.put(usuario.getNombre(), usuario);
-	}
+	public void agregarUsuario(String nombre, Usuario usuario) {
+		this.memoria.put(nombre, usuario);
+	} 
 
-
-	
-	public Map<String, Usuario> getMemoria() {
-		return memoria;
-	}
-	public void setMemoria(Map<String, Usuario> memoria) {
-		this.memoria = memoria;
+	public boolean usuarioConsultado(String nombre) {
+		return this.memoria.containsKey(nombre);
 	}
 	
+	public Usuario obtenerUsuario(String nombre) {
+		return this.memoria.get(nombre);
+	}
 	
 }
+ 

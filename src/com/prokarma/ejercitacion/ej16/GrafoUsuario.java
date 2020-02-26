@@ -16,16 +16,13 @@ public class GrafoUsuario {
 	public List<NodoUsuario> getNodos() {
 		return nodos;
 	}
-	public void setNodos(List<NodoUsuario> nodos) {
-		this.nodos = nodos;
-	}
 	
 	public void agregarNodo(NodoUsuario miNodo) {
 		this.nodos.add(miNodo);
-	}
+	} 
 
-	
-	public void createAristaList() {
+
+	public void createArista() {
 		int idNextNodo;
 		AristaUsuario arista;
 		AristaUsuario aristaBi;

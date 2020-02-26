@@ -2,6 +2,7 @@ package com.prokarma.ejercitacion.ej16;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
@@ -9,59 +10,52 @@ import com.prokarma.ejercitacion.ej16.exceptions.UsuarioNoEncontradoException;
 
 public class BuscadorUsuario {
 
-	private ManejoArchivo lector;
 	private GrafoUsuario grafo;
 	private Logger logger;
-	
-	public BuscadorUsuario(Logger logger, ManejoArchivo lector) {
+	private MemoriaCache memoria; 
+	 
+	public BuscadorUsuario(Logger logger) {
 		this.logger = logger;
 		this.grafo = new GrafoUsuario();
-		this.lector = lector;
+		this.memoria = new MemoriaCache();
 	}
 
-	
-	public ManejoArchivo getLector() {
-		return lector;
-	}
-	public void setLector(ManejoArchivo lector) {
-		this.lector = lector;
-	}
-	public Logger getLogger() {
-		return logger;
-	}
-	public void setLogger(Logger logger) {
-		this.logger = logger;
-	}
-	public GrafoUsuario getGrafo() {
-		return grafo;
-	}
-	public void setGrafo(GrafoUsuario grafo) {
-		this.grafo = grafo;
+	public void inicializarGrafo(List<Usuario> listaUsuarios) {
+		int i = 0;
+		
+		for(Usuario u : listaUsuarios) {
+			NodoUsuario miNodo = new NodoUsuario(i++, u);
+			this.grafo.agregarNodo(miNodo);
+		}
+		this.grafo.createArista();
 	}
 	
-	
-	public void crearAristas() {
-		this.grafo.createAristaList();
-	}
-	
-	public void agregarNodo(NodoUsuario miNodo) {
-		this.grafo.getNodos().add(miNodo);
+	public Usuario busqueda(String nombre) throws UsuarioNoEncontradoException {		
+		Usuario usuarioEncontrado = null;
+		
+		if(!memoria.usuarioConsultado(nombre)) {
+			usuarioEncontrado = this.busquedaAmplitud(nombre);
+			memoria.agregarUsuario(nombre, usuarioEncontrado);
+		}else {
+				System.out.println("El usuario que buscaba ya se encontraba en la memoria cache");
+			usuarioEncontrado = memoria.obtenerUsuario(nombre);
+		}
+		return usuarioEncontrado;	
 	}
 	
 	
-	public Usuario busquedaAmplitud(String nombre) throws UsuarioNoEncontradoException{
+	private Usuario busquedaAmplitud(String nombre) throws UsuarioNoEncontradoException{
 		int idNextNodo = 0;
 		Queue<NodoUsuario> colaNodos = new LinkedList<NodoUsuario>();
 		Map<Integer, NodoUsuario> mapNodo = new HashMap<Integer, NodoUsuario>();
 		NodoUsuario nodo = null;
 		NodoUsuario nodoNext;
-		NodoUsuario nodoEncontrado = null;
+		Usuario usuarioEncontrado = null;
 		colaNodos.add(this.grafo.getNodos().get(0));
 		
-		this.logger.setMensaje("-- Se busco al usuario " + nombre + " --");
-		lector.escribirLog(logger);
+		logger.escribirLog("Se busco al usuario: " + nombre);
 		
-		while(!colaNodos.isEmpty() && nodoEncontrado == null) {
+		while(!colaNodos.isEmpty() && usuarioEncontrado == null) {
 			nodo = colaNodos.poll();// saco el primer nodo
 			if(!mapNodo.containsKey(nodo.getId())) {
 				mapNodo.put(nodo.getId(), nodo);
@@ -72,15 +66,14 @@ public class BuscadorUsuario {
 						colaNodos.add(nodoNext);// agrego next nodo a la cola 
 					}
 				}else {
-					nodoEncontrado = nodo;
-					this.logger.setMensaje("Nodo buscado:\n" + nodoEncontrado.getUsuario().toString());
-					lector.escribirLog(logger);
+					usuarioEncontrado = nodo.getUsuario();
+					logger.escribirLog(usuarioEncontrado.toString());
 				}
 			}
 		}
 		if(!nodo.getUsuario().getNombre().equalsIgnoreCase(nombre)) {
 			throw new UsuarioNoEncontradoException("No se ha encontrado el usuario que buscaba");
 		}
-	return nodoEncontrado.getUsuario();	
+	return usuarioEncontrado;	
 	}
 }
