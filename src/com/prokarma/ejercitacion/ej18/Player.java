@@ -37,7 +37,7 @@ public class Player extends Thread{
 		
 		this.message = this.messages.poll();
 		
-		while(!this.message.equals(Message.LOSE)) {
+		if(!this.message.equals(Message.LOSE)) {
 			response();
 
 			do {
@@ -48,6 +48,7 @@ public class Player extends Thread{
 						existPosition = true;
 					}else {
 						this.markedPositions.get(row).add(column);
+						existPosition = false;
 					}
 				}else {
 					this.markedPositions.put(row, columns);
@@ -67,6 +68,7 @@ public class Player extends Thread{
 
 		if(this.table.getTable()[row][column-1] == 1) {
 			this.remainingBoats -= 1;
+			this.table.getTable()[row][column-1] = 0;
 			if(this.remainingBoats == 0) {
 				this.messages.add(Message.LOSE);
 			}else {
@@ -74,6 +76,7 @@ public class Player extends Thread{
 			}
 		}else {
 			this.messages.add(Message.WATER);
+			this.table.getTable()[row][column-1] = -1;
 		}
 
 	}

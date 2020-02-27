@@ -19,15 +19,28 @@ public class Test {
 		Player playerBlue = new Player(coordinates, message, blueTable, "ramon", "blue"); //thread
 		Player playerRed = new Player(coordinates, message, redTable, "mario", "red"); //thread
 		
-		startGame(playerBlue, playerRed, blueTable, redTable);
+		String letter = null;
+		int number = 0;
 		
+		startGame(letter, number, playerBlue, playerRed, blueTable, redTable);
 		
+			System.out.println("--- START GAME --- \nBlue turn...");		
+			System.out.println("Indicate attack position, first letter");
+		input.nextLine();	
+		letter = input.nextLine();
+			System.out.println("And number");
+		number = input.nextInt();
+		coordinates.add(blueTable.convert(letter));	
+		coordinates.add(number);	
+			
+		playerRed.start();
+		
+		showTables(playerBlue, playerRed, blueTable, redTable);
 	}
 	
 	
-	public static void startGame(Player playerBlue, Player playerRed, Table blueTable, Table redTable) {
-		String letter;
-		int number;
+	public static void startGame(String letter, int number, Player playerBlue, Player playerRed, Table blueTable, Table redTable) {
+		
 		
 		for(int i = 0; i < 3; i++) {
 			input.nextLine();
@@ -36,7 +49,7 @@ public class Test {
 				System.out.println("Insert the number");
 			number = input.nextInt();
 			playerBlue.putBoats(letter, number);
-			System.out.println(playerBlue.getUserName() + " put a boat in position: " + letter + " " + number);//logguear
+				System.out.println(playerBlue.getUserName() + " put a boat in position: " + letter + " " + number);
 		}
 		for(int i = 0; i < 3; i++) {
 			input.nextLine();
@@ -45,8 +58,11 @@ public class Test {
 				System.out.println("Insert the number");
 			number = input.nextInt();
 			playerRed.putBoats(letter, number);
-			System.out.println(playerBlue.getUserName() + " put a boat in position: " + letter + " " + number);
+				System.out.println(playerRed.getUserName() + " put a boat in position: " + letter + " " + number);
 		}
+	}
+	
+	public static void showTables(Player playerBlue, Player playerRed, Table blueTable, Table redTable) {
 		System.out.println(playerBlue.toString());
 		blueTable.showTable();
 		System.out.println("\n");
