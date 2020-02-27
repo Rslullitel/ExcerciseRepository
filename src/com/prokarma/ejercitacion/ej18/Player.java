@@ -1,6 +1,9 @@
 package com.prokarma.ejercitacion.ej18;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 public class Player extends Thread{
@@ -10,13 +13,15 @@ public class Player extends Thread{
 	private String color;
 	private int remainingBoats;
 	private Message message;
-	BlockingQueue<int[][]> coordinates; // posiciones de la matriz 
+	BlockingQueue<Integer> coordinates; // posiciones de la matriz 
 	BlockingQueue<Message> messages;
+	Map<String, Set<Integer>> markedPositions;
 	
 	
-	public Player(BlockingQueue<int[][]> coordinates, BlockingQueue<Message> messages, Table table, String userName, String color) {
+	public Player(BlockingQueue<Integer> coordinates, BlockingQueue<Message> messages, Table table, String userName, String color) {
 		this.coordinates = coordinates;
 		this.messages = messages;
+		this.markedPositions = new HashMap<String, Set<Integer>>();
 		this.table = table;
 		this.userName = userName;
 		this.color = color;
@@ -25,20 +30,42 @@ public class Player extends Thread{
 
 	@Override
 	public void run() {
-		while(!this.messages.peek().equals(Message.LOSE)) {
-			counterStrike(stringRandom(), intRandom());
+		String row; 
+		int column;
+		boolean existPosition = false;
+		Set<Integer> columns = null;
+		
+		this.message = this.messages.poll();
+		
+		while(!this.message.equals(Message.LOSE)) {
+			response();
+
+			do {
+				row = stringRandom();
+				column = intRandom();
+				if(this.markedPositions.containsKey(row)) {
+					if(this.markedPositions.get(row).contains(column)) {	
+						existPosition = true;
+					}else {
+						this.markedPositions.get(row).add(column);
+					}
+				}else {
+					this.markedPositions.put(row, columns);
+					this.markedPositions.get(row).add(column);
+					existPosition = false;
+				}
+			}while(existPosition);
+			
+			coordinates.add(this.table.convert(row));
+			coordinates.add(column);
 		}
 	}
 	
-	public void counterStrike(String row, int column){
-		int i = 0;
-		
-		while(i < this.table.getLetters().length && !this.table.getLetters()[i].equalsIgnoreCase(row)) {
-			if(!this.table.getLetters()[i].equalsIgnoreCase(row)) {
-				i++;
-			}
-		}
-		if(this.table.getTable()[i][column-1] == 1) {
+	public void response(){
+		int row = coordinates.poll();
+		int column = coordinates.poll();
+
+		if(this.table.getTable()[row][column-1] == 1) {
 			this.remainingBoats -= 1;
 			if(this.remainingBoats == 0) {
 				this.messages.add(Message.LOSE);

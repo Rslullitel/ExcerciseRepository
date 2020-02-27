@@ -15,13 +15,7 @@ public class Table {
 	 
 	
 	public void putBoats(String row, int column) {
-		int i = 0;
-		while(i < letters.length && !letters[i].equalsIgnoreCase(row)) {
-			if(!letters[i].equalsIgnoreCase(row)) {
-				i++;
-			}
-		}
-		this.table[i][column-1] = boat;
+		this.table[convert(row)][column-1] = this.boat;
 	}
 	
 	public void showTable() {
@@ -32,6 +26,14 @@ public class Table {
 				System.out.print(this.table[i][j] + "  ");
 			}
 		}
+	}
+	
+	public int convert(String row) {
+		int i = 0;
+		while(i < this.letters.length && !this.letters[i].equalsIgnoreCase(row)) {
+				i++;
+		}
+	return i;	
 	}
 
 
