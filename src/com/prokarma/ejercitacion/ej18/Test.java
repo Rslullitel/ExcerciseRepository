@@ -1,5 +1,6 @@
 package com.prokarma.ejercitacion.ej18;
 
+import java.util.Date;
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
@@ -11,26 +12,20 @@ public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		BlockingQueue<Position> coordinates = new ArrayBlockingQueue<Position>(1024);
-		BlockingQueue<Message> message = new ArrayBlockingQueue<Message>(1024);
+		BlockingQueue<Position> coordinates = new ArrayBlockingQueue<Position>(1);
+		BlockingQueue<Message> messages = new ArrayBlockingQueue<Message>(1);
 		
 		Table blueTable = new Table();
 		Table redTable = new Table();
-		Player playerBlue = new Player(coordinates, message, blueTable, "ramon"); //thread
-		Player playerRed = new Player(coordinates, message, redTable, "mario"); //thread
+		Player playerBlue = new Player(coordinates, messages, blueTable, "ramon", true); 
+		Player playerRed = new Player(coordinates, messages, redTable, "mario", false);
 		
 		String letter = null;
-		int number = 0;
-		
+		int number = 0;	
 		startGame(letter, number, playerBlue, playerRed, blueTable, redTable);
-		
-			System.out.println("--- START GAME ---");		
-			System.out.println("Indicate attack position, first letter");
-		input.nextLine();	
-		letter = input.nextLine();
-			System.out.println("And number");
-		number = input.nextInt();
-		
+
+		playerBlue.run();
+		playerRed.run();	
 		
 		showTables(playerBlue, playerRed, blueTable, redTable);
 	}
@@ -46,7 +41,7 @@ public class Test {
 				System.out.println("Insert the number");
 			number = input.nextInt();
 			playerBlue.putBoats(letter, number);
-				System.out.println(playerBlue.getUserName() + " put a boat in position: " + letter + " " + number);
+				System.out.println(new Date() + ": " + playerBlue.getUserName() + " put a boat in position: " + letter + " " + number);
 		}
 		for(int i = 0; i < 3; i++) {
 			input.nextLine();
@@ -55,7 +50,7 @@ public class Test {
 				System.out.println("Insert the number");
 			number = input.nextInt();
 			playerRed.putBoats(letter, number);
-				System.out.println(playerRed.getUserName() + " put a boat in position: " + letter + " " + number);
+				System.out.println(new Date() + ": " + playerRed.getUserName() + " put a boat in position: " + letter + " " + number);
 		}
 	}
 	

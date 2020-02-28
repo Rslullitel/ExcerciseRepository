@@ -26,7 +26,7 @@ public class Table {
 	}
 	
 	public Position getPosition(String row, int column) {
-		return new Position(convert(row), column-1);
+		return new Position(convert(row), column);
 	}
 	
 	public int convert(String row) {
