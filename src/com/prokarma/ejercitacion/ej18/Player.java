@@ -1,74 +1,66 @@
 package com.prokarma.ejercitacion.ej18;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
-import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 public class Player extends Thread{
 
+	private static final int WATER = 0;
+	private static final int BOAT = 1;
+	private static final int MARKED = -1;
+	
 	private Table table;
+	private Table oponentTable;
 	private String userName;
-	private String color;
 	private int remainingBoats;
 	private Message message;
-	BlockingQueue<Integer> coordinates; // posiciones de la matriz 
+	BlockingQueue<Position> coordinates;
 	BlockingQueue<Message> messages;
-	Map<String, Set<Integer>> markedPositions;
 	
 	
-	public Player(BlockingQueue<Integer> coordinates, BlockingQueue<Message> messages, Table table, String userName, String color) {
+	public Player(BlockingQueue<Position> coordinates, BlockingQueue<Message> messages, Table table, String userName) {
 		this.coordinates = coordinates;
 		this.messages = messages;
-		this.markedPositions = new HashMap<String, Set<Integer>>();
 		this.table = table;
 		this.userName = userName;
-		this.color = color;
 		this.remainingBoats = 3;
+		this.oponentTable = new Table();
 	} 
 
 	@Override
 	public void run() {
-		String row; 
+		int row; 
 		int column;
-		boolean existPosition = false;
-		Set<Integer> columns = null;
+		Position position;
 		
 		this.message = this.messages.poll();
 		
 		if(!this.message.equals(Message.LOSE)) {
 			response();
 
+			boolean existPosition = true;
 			do {
-				row = stringRandom();
-				column = intRandom();
-				if(this.markedPositions.containsKey(row)) {
-					if(this.markedPositions.get(row).contains(column)) {	
-						existPosition = true;
-					}else {
-						this.markedPositions.get(row).add(column);
-						existPosition = false;
-					}
-				}else {
-					this.markedPositions.put(row, columns);
-					this.markedPositions.get(row).add(column);
+				position = this.oponentTable.getPosition(stringRandom(), intRandom());
+				row = position.getRow();
+				column = position.getColumn();			
+				if(this.oponentTable.getTable()[row][column] != MARKED) {
 					existPosition = false;
+					this.oponentTable.getTable()[row][column] = MARKED;
 				}
 			}while(existPosition);
 			
-			coordinates.add(this.table.convert(row));
-			coordinates.add(column);
+			coordinates.add(position);
 		}
 	}
 	
 	public void response(){
-		int row = coordinates.poll();
-		int column = coordinates.poll();
+		Position position = coordinates.poll();
+		int row = position.getRow();
+		int column = position.getColumn();
 
-		if(this.table.getTable()[row][column-1] == 1) {
+		if(this.table.getTable()[row][column] == BOAT) {
 			this.remainingBoats -= 1;
-			this.table.getTable()[row][column-1] = 0;
+			this.table.getTable()[row][column] = WATER;
 			if(this.remainingBoats == 0) {
 				this.messages.add(Message.LOSE);
 			}else {
@@ -76,7 +68,7 @@ public class Player extends Thread{
 			}
 		}else {
 			this.messages.add(Message.WATER);
-			this.table.getTable()[row][column-1] = -1;
+			this.table.getTable()[row][column] = MARKED;
 		}
 
 	}
@@ -112,16 +104,13 @@ public class Player extends Thread{
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
-	public String getColor() {
-		return color;
-	}	
+	
 	public Message getMessage() {
 		return message;
 	}
 
 	public String toString() {
-		return "Player: " + this.userName +
-			   "\nTeam color: " + this.color;
+		return "Player: " + this.userName;
 	}
 	
 }

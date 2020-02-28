@@ -1,21 +1,18 @@
 package com.prokarma.ejercitacion.ej18;
 
 public class Table {
+	
+	private static final int BOAT = 1;
 
-	private String color;
 	private String[] letters = {"a", "b", "c", "d", "e", "f", "g", "h"};
-	private int[][] table;
-	private int boat;
+	private int[][] table;//hacer matriz a boolean[][]
 	
-	public Table(String color) {
-		this.table = new int[8][8];
-		this.color = color;
-		this.boat = 1;   
+	public Table() {
+		this.table = new int[8][8]; 
 	}
-	 
-	
+	 	
 	public void putBoats(String row, int column) {
-		this.table[convert(row)][column-1] = this.boat;
+		this.table[convert(row)][column-1] = BOAT;
 	}
 	
 	public void showTable() {
@@ -28,6 +25,10 @@ public class Table {
 		}
 	}
 	
+	public Position getPosition(String row, int column) {
+		return new Position(convert(row), column-1);
+	}
+	
 	public int convert(String row) {
 		int i = 0;
 		while(i < this.letters.length && !this.letters[i].equalsIgnoreCase(row)) {
@@ -37,12 +38,6 @@ public class Table {
 	}
 
 
-	public String getColor() {
-		return color;
-	}
-	public void setColor(String color) {
-		this.color = color;
-	}
 	public String[] getLetters() {
 		return letters;
 	}
@@ -55,12 +50,11 @@ public class Table {
 	public void setTable(int[][] table) {
 		this.table = table;
 	}
-	public int getBoat() {
-		return boat;
+	public static int isBoat() {
+		return BOAT;
 	}
-	public void setBoat(int boat) {
-		this.boat = boat;
-	}
+	
+
 	
 	
 }

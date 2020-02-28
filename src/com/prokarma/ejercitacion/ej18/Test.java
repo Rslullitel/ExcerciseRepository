@@ -11,29 +11,26 @@ public class Test {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		BlockingQueue<Integer> coordinates = new ArrayBlockingQueue<Integer>(1024);
+		BlockingQueue<Position> coordinates = new ArrayBlockingQueue<Position>(1024);
 		BlockingQueue<Message> message = new ArrayBlockingQueue<Message>(1024);
 		
-		Table blueTable = new Table("blue");
-		Table redTable = new Table("red");
-		Player playerBlue = new Player(coordinates, message, blueTable, "ramon", "blue"); //thread
-		Player playerRed = new Player(coordinates, message, redTable, "mario", "red"); //thread
+		Table blueTable = new Table();
+		Table redTable = new Table();
+		Player playerBlue = new Player(coordinates, message, blueTable, "ramon"); //thread
+		Player playerRed = new Player(coordinates, message, redTable, "mario"); //thread
 		
 		String letter = null;
 		int number = 0;
 		
 		startGame(letter, number, playerBlue, playerRed, blueTable, redTable);
 		
-			System.out.println("--- START GAME --- \nBlue turn...");		
+			System.out.println("--- START GAME ---");		
 			System.out.println("Indicate attack position, first letter");
 		input.nextLine();	
 		letter = input.nextLine();
 			System.out.println("And number");
 		number = input.nextInt();
-		coordinates.add(blueTable.convert(letter));	
-		coordinates.add(number);	
-			
-		playerRed.start();
+		
 		
 		showTables(playerBlue, playerRed, blueTable, redTable);
 	}
