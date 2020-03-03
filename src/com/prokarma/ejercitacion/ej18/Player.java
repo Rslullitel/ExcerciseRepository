@@ -20,7 +20,6 @@ public class Player extends Thread{
 	BlockingQueue<Position> coordinates;
 	BlockingQueue<Message> messages;
 	
-	
 	public Player(BlockingQueue<Position> coordinates, BlockingQueue<Message> messages, Table table, String userName, boolean isMyTurn) {
 		this.coordinates = coordinates;
 		this.messages = messages;
@@ -34,49 +33,53 @@ public class Player extends Thread{
 
 	@Override
 	public void run() {
+		while(this.gameNotOver) {	
+			 try {
+				play();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private synchronized void play() throws InterruptedException {
 		int row; 
 		int column;
 		Position position;
+		boolean existPosition;
 		
-		while(this.gameNotOver) {
-			if(isMyTurn) {
-				boolean existPosition = true;
-				do {
-					position = this.table.getPosition(stringRandom(), intRandom());
-					row = position.getRow();
-					column = position.getColumn();			
-					if(this.oponentTable.getTable()[row][column] != MARKED) {
-						existPosition = false;
-						this.oponentTable.getTable()[row][column] = MARKED;
-					}
-				}while(existPosition);
-						System.out.println(new Date() + ": " + this.userName + " attack in " + row + " " + column);
-						isMyTurn = false;
-					try {
-						coordinates.put(position);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-			}else {
-				response();
-				if(!this.messages.isEmpty()) {
-					if(this.messages.poll().equals(Message.LOSE)){
-						this.gameNotOver = false;
-					}
+		if(isMyTurn) {	
+			do {
+				position = this.table.getPosition(stringRandom(), intRandom());
+				row = position.getRow();
+				column = position.getColumn();			
+				if(this.oponentTable.getTable()[row][column] != MARKED) {
+					existPosition = false;
+					this.oponentTable.getTable()[row][column] = MARKED;
+				}else {
+					existPosition = true;
 				}
-				isMyTurn = true;
-			}		
-			time(); //thread block	
+			}while(existPosition);
+					System.out.println(new Date() + ": " + this.userName + " attack in " + (row+1) + " " + (column+1));
+				coordinates.add(position);
+				isMyTurn = false;
+				sleep(1500);
+		}else {
+			if(!this.messages.isEmpty()) {
+				if(this.messages.poll().equals(Message.LOSE)){
+					this.gameNotOver = false;
+						System.out.println(new Date() + ": " + this.userName + " won the game");
+				}
+			}
+			if(this.gameNotOver) {
+				while(this.coordinates.isEmpty()) {
+				}
+			}
+			response();
+			isMyTurn = true;
+			sleep(1000);
 		}
-				
-	}
-	
-	public void time() {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		
 	}
 	
 	public void response() {
@@ -89,19 +92,19 @@ public class Player extends Thread{
 			this.table.getTable()[row][column] = WATER;
 			if(this.remainingBoats == 0) {
 				this.messages.add(Message.LOSE);
-					System.out.println(new Date() + ": " + "lose");
+				this.gameNotOver = false;
+					System.out.println(new Date() + ": "+ this.userName + " say: i lose");
 			}else {
-				this.messages.add(Message.SUNKEN);
-					System.out.println(new Date() + ": " + "sunken boat");
+				this.messages.add(Message.SUNKEN_BOAT);
+					System.out.println(new Date() + ": "+ this.userName + " say: sunken boat");
 			}
 		}else {
 			this.messages.add(Message.WATER);
 			this.table.getTable()[row][column] = MARKED;
-				System.out.println(new Date() + ": " + "water");
+				System.out.println(new Date() + ": "+ this.userName + " say: water");
 		}
 
 	}
-	
 	
 	private String stringRandom() {
 		int leftLimit = 97; // letter 'a'
@@ -122,8 +125,8 @@ public class Player extends Thread{
 	return numRand;	 
 	}
 	
-	public boolean getIsMyTurn() {
-		return this.isMyTurn;
+	public int getRemainingBoats() {
+		return this.remainingBoats;
 	}
 	public void putBoats(String row, int column) {
 		this.table.putBoats(row, column);

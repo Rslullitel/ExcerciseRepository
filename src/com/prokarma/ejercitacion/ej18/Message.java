@@ -2,7 +2,7 @@ package com.prokarma.ejercitacion.ej18;
 
 public enum Message {
 
-	SUNKEN,
+	SUNKEN_BOAT,
 	WATER,
 	LOSE,
 	

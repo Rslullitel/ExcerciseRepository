@@ -17,15 +17,15 @@ public class Test {
 		
 		Table blueTable = new Table();
 		Table redTable = new Table();
-		Player playerBlue = new Player(coordinates, messages, blueTable, "ramon", true); 
-		Player playerRed = new Player(coordinates, messages, redTable, "mario", false);
+		Player playerBlue = new Player(coordinates, messages, blueTable, "ramiro", true); 
+		Player playerRed = new Player(coordinates, messages, redTable, "ahmad", false);
 		
 		String letter = null;
 		int number = 0;	
 		startGame(letter, number, playerBlue, playerRed, blueTable, redTable);
-
-		playerBlue.run();
-		playerRed.run();	
+		
+		playerBlue.start();
+		playerRed.start();
 		
 		showTables(playerBlue, playerRed, blueTable, redTable);
 	}
@@ -36,21 +36,38 @@ public class Test {
 		
 		for(int i = 0; i < 3; i++) {
 			input.nextLine();
-				System.out.println("Hi. Put the boat... Insert the letter");
-			letter = input.nextLine();
-				System.out.println("Insert the number");
-			number = input.nextInt();
+			do {
+					System.out.println("Hi. Put the boat... Insert the letter");
+				letter = input.nextLine();
+			}while(!rigthLetter(letter));
+			do {
+					System.out.println("Insert the number");
+				number = input.nextInt();
+			}while(number < 1 || number > 8);
 			playerBlue.putBoats(letter, number);
 				System.out.println(new Date() + ": " + playerBlue.getUserName() + " put a boat in position: " + letter + " " + number);
 		}
 		for(int i = 0; i < 3; i++) {
 			input.nextLine();
+			do {
 				System.out.println("Hi. Put the boat... Insert the letter");
 			letter = input.nextLine();
-				System.out.println("Insert the number");
-			number = input.nextInt();
+			}while(!rigthLetter(letter));
+			do {
+					System.out.println("Insert the number");
+				number = input.nextInt();
+			}while(number < 1 || number > 8);
 			playerRed.putBoats(letter, number);
 				System.out.println(new Date() + ": " + playerRed.getUserName() + " put a boat in position: " + letter + " " + number);
+		}
+	}
+	
+	public static boolean rigthLetter(String letter) {
+		if(!letter.equalsIgnoreCase("a") && !letter.equalsIgnoreCase("b") && !letter.equalsIgnoreCase("c") && !letter.equalsIgnoreCase("d")
+		&& !letter.equalsIgnoreCase("e") && !letter.equalsIgnoreCase("f") && !letter.equalsIgnoreCase("g") && !letter.equalsIgnoreCase("h")) {
+			return false;
+		}else {
+			return true;
 		}
 	}
 	
