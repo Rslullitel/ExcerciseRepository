@@ -20,15 +20,15 @@ public class Player extends Thread{
 	BlockingQueue<Position> coordinates;
 	BlockingQueue<Message> messages;
 	
-	public Player(BlockingQueue<Position> coordinates, BlockingQueue<Message> messages, Table table, String userName, boolean isMyTurn) {
+	public Player(BlockingQueue<Position> coordinates, BlockingQueue<Message> messages, String userName, boolean isMyTurn) {
 		this.coordinates = coordinates;
 		this.messages = messages;
-		this.table = table;
+		this.table = new Table();
+		this.oponentTable = new Table();
 		this.userName = userName;
 		this.remainingBoats = 3;
 		this.isMyTurn = isMyTurn;
 		this.gameNotOver = true;
-		this.oponentTable = new Table();
 	} 
 
 	@Override
@@ -45,22 +45,23 @@ public class Player extends Thread{
 	private synchronized void play() throws InterruptedException {
 		int row; 
 		int column;
+		String rowToShow;
 		Position position;
 		boolean existPosition;
 		
 		if(isMyTurn) {	
 			do {
-				position = this.table.getPosition(stringRandom(), intRandom());
+				rowToShow = stringRandom();
+				position = this.table.getPosition(rowToShow, intRandom());
 				row = position.getRow();
 				column = position.getColumn();			
-				if(this.oponentTable.getTable()[row][column] != MARKED) {
+				if(this.oponentTable.getMarkedPosition(row, column) != MARKED) { 
 					existPosition = false;
-					this.oponentTable.getTable()[row][column] = MARKED;
 				}else {
 					existPosition = true;
 				}
 			}while(existPosition);
-					System.out.println(new Date() + ": " + this.userName + " attack in " + (row+1) + " " + (column+1));
+					System.out.println(new Date() + ": " + this.userName + " attack in " + rowToShow + " " + (column+1));
 				coordinates.add(position);
 				isMyTurn = false;
 				sleep(1500);
@@ -74,12 +75,12 @@ public class Player extends Thread{
 			if(this.gameNotOver) {
 				while(this.coordinates.isEmpty()) {
 				}
-			}
-			response();
-			isMyTurn = true;
-			sleep(1000);
+				response();
+				isMyTurn = true;
+				sleep(1000);
+			}	
+			
 		}
-		
 	}
 	
 	public void response() {
