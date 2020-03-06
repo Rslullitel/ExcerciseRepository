@@ -24,6 +24,8 @@ public class Table {
 	public int getMarkedPosition(int row, int column) {
 		if(this.table[row][column] == MARKED) {
 			return MARKED;
+		}else if(this.table[row][column] == BOAT) {
+			return BOAT;
 		}else {
 			this.table[row][column] = MARKED;
 			return WATER;

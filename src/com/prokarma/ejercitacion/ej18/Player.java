@@ -5,8 +5,7 @@ import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 
 public class Player extends Thread{
-
-	private static final int WATER = 0;
+	
 	private static final int BOAT = 1;
 	private static final int MARKED = -1;
 	
@@ -16,7 +15,6 @@ public class Player extends Thread{
 	private int remainingBoats;
 	private boolean isMyTurn;
 	private boolean gameNotOver;
-	private Message message;
 	BlockingQueue<Position> coordinates;
 	BlockingQueue<Message> messages;
 	
@@ -88,9 +86,8 @@ public class Player extends Thread{
 		int row = position.getRow();
 		int column = position.getColumn();
 
-		if(this.table.getTable()[row][column] == BOAT) {
+		if(this.table.getMarkedPosition(row, column) == BOAT) {
 			this.remainingBoats -= 1;
-			this.table.getTable()[row][column] = WATER;
 			if(this.remainingBoats == 0) {
 				this.messages.add(Message.LOSE);
 				this.gameNotOver = false;
@@ -101,7 +98,6 @@ public class Player extends Thread{
 			}
 		}else {
 			this.messages.add(Message.WATER);
-			this.table.getTable()[row][column] = MARKED;
 				System.out.println(new Date() + ": "+ this.userName + " say: water");
 		}
 
@@ -137,9 +133,6 @@ public class Player extends Thread{
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;
-	}
-	public Message getMessage() {
-		return message;
 	}
 	public String toString() {
 		return "Player: " + this.userName;

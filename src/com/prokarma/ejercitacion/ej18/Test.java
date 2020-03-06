@@ -55,7 +55,7 @@ public class Test {
 		do {
 				System.out.println("Hi. Put the boat... Insert the letter. (a - h)");
 			letter = input.nextLine();
-		}while(!rigthLetter(letter));
+		}while(!rightLetter(letter));
 	return letter;		
 	}
 	
@@ -69,7 +69,7 @@ public class Test {
 	return number;	
 	}
 	
-	private static boolean rigthLetter(String letter) {
+	private static boolean rightLetter(String letter) {
 		Pattern pattern = Pattern.compile(REGEX);
 		Matcher matcher = pattern.matcher(letter);
 		if(!matcher.find()) {
