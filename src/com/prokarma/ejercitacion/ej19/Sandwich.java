@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Sandwich {
-
+	
+	//private String tipo;
+	//private int precio;
 	private List<Ingredient> ingredients;
 	private boolean state;
 	

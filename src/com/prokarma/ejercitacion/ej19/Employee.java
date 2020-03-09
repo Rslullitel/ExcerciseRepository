@@ -4,7 +4,18 @@ import java.util.concurrent.BlockingQueue;
 
 public abstract class Employee extends Thread{
 
-	protected static final String OPCION_1 = "jamon crudo y queso";
+	protected static final String OPCION_1 = "Jamon Crudo y Danbo";
+	protected static final String OPCION_2 = "Jamon Cocido y Danbo";
+	protected static final String OPCION_3 = "Jamon Crudo y Cheddar";
+	protected static final String OPCION_4 = "Jamon Cocido y Cheddar";
+	protected static final String OPCION_5 = "Salami y Danbo";
+	
+	protected static final int PRECIO_1 = 150;
+	protected static final int PRECIO_2 = 120;
+	protected static final int PRECIO_3 = 200;
+	protected static final int PRECIO_4 = 170;
+	protected static final int PRECIO_5 = 100;
+	
 	
 	private BlockingQueue<Ticket> tickets;
 	private BlockingQueue<Client> waitClients;
@@ -18,7 +29,7 @@ public abstract class Employee extends Thread{
 		this.tickets.add(ticket);
 	}
 	
-	public Ticket removeTicket() {
+	public Ticket pollTicket() {
 		return this.tickets.poll();
 	}
 	

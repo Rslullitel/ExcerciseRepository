@@ -4,7 +4,7 @@ import java.util.concurrent.BlockingQueue;
 
 public class ClientGenerator extends Thread{
 
-	private static final int CANT_CLIENTS = 50;
+	private static final int CANT_CLIENTS = clientsRandom();
 	
 	private BlockingQueue<Client> clients;
 	
@@ -29,7 +29,11 @@ public class ClientGenerator extends Thread{
 	}
 	
 	private int cashRandom() {
-		return (int)(Math.random()*(400-200+1)+100);
+		return (int)(Math.random()*(600-400+1)+400);
+	}
+	
+	private static int clientsRandom() {
+		return (int)(Math.random()*(40-1+1)+1);
 	}
 	
 	

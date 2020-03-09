@@ -4,6 +4,8 @@ import java.util.List;
 
 public class Ticket {
 
+	//private String typePay;
+	//private Order order;
 	private int number;
 	private List<String> sandwiches;
 	

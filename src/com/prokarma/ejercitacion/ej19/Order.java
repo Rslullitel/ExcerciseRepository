@@ -4,15 +4,22 @@ import java.util.List;
 
 public class Order {
 
+	//private boolean state;
+	//private int number;
 	private Ticket ticket;
 	private List<Sandwich> sandwiches;
 	
 	public Order(Ticket ticket) {
 		this.ticket = ticket;
+		//this.state = false;
+		//this.number++;
 	}
 
 	
-	//metodo para agregar a esta lista todos los sandwiches
+	public void addSandwich(Sandwich sandwich) {
+		this.sandwiches.add(sandwich);
+	}
+	
 	
 	public Ticket getTicket() {
 		return ticket;

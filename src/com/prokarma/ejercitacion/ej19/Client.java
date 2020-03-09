@@ -4,7 +4,7 @@ public class Client {
 	
 	private static final int CASH = 1;
 	
-	private int ticketNumber;
+	private int orderNumber;
 	private Order order;
 	private int cash;
 	private Payment payment;
@@ -13,22 +13,30 @@ public class Client {
 		this.cash = cash;
 	}
 
-	public int pay(int typePay, int amount) {
+	public int pay(int typePay, int amount) throws NotEnoughCashException {
 		if(typePay == CASH) {
 			this.payment = new Cash();
-			return payment.pay(amount);
+			if(this.cash < amount) {
+				throw new NotEnoughCashException("You dont have enough money to pay");
+			}else {
+				this.cash -= amount;
+				return payment.pay(amount);
+			}
 		}else {
 			this.payment = new CreditCard();
 			return this.payment.pay(amount);
 		}
 	}
 	
+	public void assignOrderNumber(int number) {
+		this.orderNumber = number;
+	}
 	
 	public int getTicketNumber() {
-		return ticketNumber;
+		return orderNumber;
 	}
 	public void setTicketNumber(int ticketNumber) {
-		this.ticketNumber = ticketNumber;
+		this.orderNumber = ticketNumber;
 	}
 	public int getCash() {
 		return cash;

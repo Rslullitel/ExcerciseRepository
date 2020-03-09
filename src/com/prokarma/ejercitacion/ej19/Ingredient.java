@@ -3,11 +3,11 @@ package com.prokarma.ejercitacion.ej19;
 public abstract class Ingredient {
 
 	private String name;
-	private double weight;
+	private double quantity;
 	
-	public Ingredient(String name, double weight) {
+	public Ingredient(String name, double quantity) {
 		this.name = name;
-		this.weight = weight;
+		this.quantity = quantity;
 	}
 
 	
@@ -18,10 +18,10 @@ public abstract class Ingredient {
 		this.name = name;
 	}
 	public double getWeight() {
-		return weight;
+		return quantity;
 	}
-	public void setWeight(double weight) {
-		this.weight = weight;
+	public void setWeight(double quantity) {
+		this.quantity = quantity;
 	}
 	
 	
