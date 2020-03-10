@@ -4,28 +4,28 @@ import java.util.List;
 
 public class Order {
 
-	//private boolean state;
-	//private int number;
-	private Ticket ticket;
+	private boolean state;
+	private int number;
 	private List<Sandwich> sandwiches;
 	
-	public Order(Ticket ticket) {
-		this.ticket = ticket;
-		//this.state = false;
-		//this.number++;
-	}
-
-	
-	public void addSandwich(Sandwich sandwich) {
-		this.sandwiches.add(sandwich);
+	public Order(List<Sandwich> sandwiches) {
+		this.state = false;
+		this.number++;
+		this.sandwiches = sandwiches;
 	}
 	
 	
-	public Ticket getTicket() {
-		return ticket;
+	public boolean isState() {
+		return state;
 	}
-	public void setTicket(Ticket ticket) {
-		this.ticket = ticket;
+	public void setState(boolean state) {
+		this.state = state;
+	}
+	public int getNumber() {
+		return number;
+	}
+	public void setNumber(int number) {
+		this.number = number;
 	}
 	public List<Sandwich> getSandwiches() {
 		return sandwiches;
@@ -35,5 +35,8 @@ public class Order {
 	}
 	
 	
-	
+	public String toString() {
+		return "Order number: " + this.number + 
+			   "\nSandwiches: " + this.sandwiches.toString();
+	}
 }

@@ -4,29 +4,52 @@ import java.util.List;
 
 public class Ticket {
 
-	//private String typePay;
-	//private Order order;
-	private int number;
-	private List<String> sandwiches;
+	private String typePay;
+	private Order order;
+	private int total;
 	
-	public Ticket(List<String> sandwiches) {
-		this.number++;
-		this.sandwiches = sandwiches;
+	public Ticket(String typePay, int total, List<Sandwich> sandwiches) {
+		this.order = new Order(sandwiches);
+		this.typePay = typePay;
+		this.total = total;
 	}
 
+	public List<Sandwich> getSandwiches(){
+		return this.order.getSandwiches();
+	}
+	
+	public void changeStateOrder() {
+		this.order.setState(true);
+	}
+	
 	public int getNumber() {
-		return number;
-	}
-	public void setNumber(int number) {
-		this.number = number;
-	}
-	public List<String> getSandwiches() {
-		return sandwiches;
-	}
-	public void setSandwiches(List<String> sandwiches) {
-		this.sandwiches = sandwiches;
+		return this.order.getNumber();
 	}
 	
+	public String getTypePay() {
+		return typePay;
+	}
+	public void setTypePay(String typePay) {
+		this.typePay = typePay;
+	}
+	public Order getOrder() {
+		return order;
+	}
+	public void setOrder(Order order) {
+		this.order = order;
+	}
+	public int getTotal() {
+		return total;
+	}
+	public void setTotal(int total) {
+		this.total = total;
+	}
+
 	
+	public String toString() {
+		return this.order.toString() + 
+			   "\nType pay: " + this.typePay + 
+			   "\nTotal: " + this.total;
+	}
 	
 }

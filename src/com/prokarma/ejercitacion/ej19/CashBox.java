@@ -6,9 +6,9 @@ public class CashBox {
 
 	private int amount;
 	
-	public Ticket generateTicket(int amount, List<String> sandwiches) {
+	public Ticket generateTicket(String typePay, int amount, List<Sandwich> sandwiches) {
 		this.amount += amount;
-		return new Ticket(sandwiches);
+		return new Ticket(typePay, amount, sandwiches);
 	}
 	
 	

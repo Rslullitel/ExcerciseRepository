@@ -25,11 +25,16 @@ public class Test {
 		System.out.println("Hi, welcome to El Nono. ¿How many sandwich do you want?");
 	}
 	
-	public static void welcome() {
+	public static void askForSandwich() {
 		System.out.println("Alright, this is our sandwich menú:");
-		System.out.println("1)Jamon crudo y danbo = $150\n2)Jamon cocido y danbo = $120\n "
-						 + "3)Jamon crudo y cheddar = $200\n4)Jamon cocido y cheddar = $170\n "
+		System.out.println("1)Jamon crudo y danbo = $150\n2)Jamon cocido y danbo = $120\n"
+						 + "3)Jamon crudo y cheddar = $200\n4)Jamon cocido y cheddar = $170\n"
 						 + "5)Salami y danbo = $100");
+	}
+	
+	
+	public static void askForBread() {
+		System.out.println("¿What kind of bread do you want?\n1) Arabic\n2) French\n3) Black");
 	}
 	
 	public static void typePay() {

@@ -1,30 +1,34 @@
 package com.prokarma.ejercitacion.ej19;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Sandwich {
 	
-	//private String tipo;
-	//private int precio;
-	private List<Ingredient> ingredients;
+	private String type;
+	private int price;
 	private boolean state;
+	private Bread bread;
 	
-	public Sandwich() {
-		this.ingredients = new ArrayList<Ingredient>();
+	public Sandwich(String type, int price) {
+		this.type = type;
+		this.price = price;
 		this.state = false;//por preparar
 	}
+	
 
-	public void addIngredients(Ingredient ingredient) {
-		this.ingredients.add(ingredient);
+	public void addBread(Bread bread) {
+		this.setBread(bread);
 	}
 	
-	
-	public List<Ingredient> getIngredients() {
-		return ingredients;
+	public String getType() {
+		return type;
 	}
-	public void setIngredients(List<Ingredient> ingredients) {
-		this.ingredients = ingredients;
+	public void setType(String type) {
+		this.type = type;
+	}
+	public int getPrecio() {
+		return price;
+	}
+	public void setPrecio(int precio) {
+		this.price = precio;
 	}
 	public boolean isState() {
 		return state;
@@ -32,7 +36,16 @@ public class Sandwich {
 	public void setState(boolean state) {
 		this.state = state;
 	}
+	public Bread getBread() {
+		return bread;
+	}
+	public void setBread(Bread bread) {
+		this.bread = bread;
+	}
 	
 	
+	public String toString() {
+		return "Sandwich: " + this.type;
+	}
 	
 }

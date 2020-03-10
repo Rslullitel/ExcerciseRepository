@@ -3,7 +3,7 @@ package com.prokarma.ejercitacion.ej19;
 import java.util.concurrent.BlockingQueue;
 
 public abstract class Employee extends Thread{
-
+	
 	protected static final String OPCION_1 = "Jamon Crudo y Danbo";
 	protected static final String OPCION_2 = "Jamon Cocido y Danbo";
 	protected static final String OPCION_3 = "Jamon Crudo y Cheddar";

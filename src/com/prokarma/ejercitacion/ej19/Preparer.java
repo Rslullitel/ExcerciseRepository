@@ -4,6 +4,8 @@ import java.util.concurrent.BlockingQueue;
 
 public class Preparer extends Employee{
 
+	private static final int LESS_INGREDIENT = 10;
+	
 	private Window window;
 	
 	public Preparer(BlockingQueue<Ticket> tickets, BlockingQueue<Client> waitClients) {
@@ -14,36 +16,63 @@ public class Preparer extends Employee{
 	@Override
 	public void run() {
 		Ticket ticket;
-		String sandwich;
-		Order order;
+		Client client;
 		
 		for(int i = 0; i < 50; i++) {
 			while(this.getTickets().isEmpty()) {
 			}
 			ticket = this.pollTicket();
-			order = new Order(ticket);
 			for(int j = 0; j < ticket.getSandwiches().size(); j++) {
-				sandwich = ticket.getSandwiches().get(j);
-				order.addSandwich(prepareSandwich(sandwich));
-				//entregar orden a cliente
+				finalizeOrder(ticket.getSandwiches().get(j));
 			}
-			
+			ticket.changeStateOrder();
+			client = this.getWaitClients().poll();
+				System.out.println(ticket.toString());
+			client.addOrder(ticket.getOrder());
+				System.out.println("Bye, have a nice day");
+			time();	
 		}
 	}
 	
-	public Sandwich prepareSandwich(String sandwich) {
-		/*Sandwich preparedSandwich = new Sandwich();
+	private void finalizeOrder(Sandwich sandwich) {
+		sandwich.setState(true);
 		
-		switch(sandwich) {
+		switch(sandwich.getType()) {
 		
-		case OPCION_1:
-			restar la cantidad de productos dependiendo del sandwich
-			cambiar estado del sandwich a listo. 
-			una vez que todos esten listos cambiar estado de la orden a listo y entregar 
-		}*/
-		return null;
+		case OPCION_1: 
+			this.window.lessDanbo(LESS_INGREDIENT);
+			this.window.lessRawHam(LESS_INGREDIENT);
+		break;
+		
+		case OPCION_2:
+			this.window.lessDanbo(LESS_INGREDIENT);
+			this.window.lessCookedHam(LESS_INGREDIENT);
+		break;
+		
+		case OPCION_3:
+			this.window.lessRawHam(LESS_INGREDIENT);
+			this.window.lessCheddar(LESS_INGREDIENT);
+		break;
+		
+		case OPCION_4:
+			this.window.lessCheddar(LESS_INGREDIENT);
+			this.window.lessCookedHam(LESS_INGREDIENT);
+		break;
+		
+		case OPCION_5:
+			this.window.lessDanbo(LESS_INGREDIENT);
+			this.window.lessSalami(LESS_INGREDIENT);
+		}
 	}
 	
+	public void time() {
+		try {
+			sleep(1500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
 }
 
 

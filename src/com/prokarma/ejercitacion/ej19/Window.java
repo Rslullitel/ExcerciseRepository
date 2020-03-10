@@ -2,51 +2,72 @@ package com.prokarma.ejercitacion.ej19;
 
 public class Window {
 
-	private Salami salami;
-	private Ham raw;
-	private Ham cooked;
-	private Cheese danbo;
-	private Cheese cheddar;
+	private Ingredient salami;
+	private Ingredient cookedHam;
+	private Ingredient rawHam;
+	private Ingredient danbo;
+	private Ingredient cheddar;
 	
 	public Window() {
-		salami = new Salami("salami", 100);
-		raw = new Ham("raw", 100);
-		cooked = new Ham("cooked", 100);
-		danbo = new Cheese("danbo", 100);
-		cheddar = new Cheese("cheddar", 100);
+		salami = new Ingredient("salami", 100);
+		rawHam = new Ingredient("rawHam", 300);
+		cookedHam = new Ingredient("cookedHam", 300);
+		danbo = new Ingredient("danbo", 300);
+		cheddar = new Ingredient("cheddar", 300);
+	}
+
+	public void lessDanbo(int less) {
+		this.danbo.setWeight(less);
+	}
+	
+	public void lessCheddar(int less) {
+		this.cheddar.setWeight(less);
+	}
+	
+	public void lessRawHam(int less) {
+		this.rawHam.setWeight(less);
+	}
+	
+	public void lessCookedHam(int less) {
+		this.cookedHam.setWeight(less);
+	}
+	
+	public void lessSalami(int less) {
+		this.salami.setWeight(less);
+	}
+	
+	public Ingredient getSalami() {
+		return salami;
+	}
+	public void setSalami(Ingredient salami) {
+		this.salami = salami;
+	}
+	public Ingredient getCookedHam() {
+		return cookedHam;
+	}
+	public void setCookedHam(Ingredient cookedHam) {
+		this.cookedHam = cookedHam;
+	}
+	public Ingredient getRawHam() {
+		return rawHam;
+	}
+	public void setRawHam(Ingredient rawHam) {
+		this.rawHam = rawHam;
+	}
+	public Ingredient getDanbo() {
+		return danbo;
+	}
+	public void setDanbo(Ingredient danbo) {
+		this.danbo = danbo;
+	}
+	public Ingredient getCheddar() {
+		return cheddar;
+	}
+	public void setCheddar(Ingredient cheddar) {
+		this.cheddar = cheddar;
 	}
 
 	
-	public Salami getSalami() {
-		return salami;
-	}
-	public void setSalami(Salami salami) {
-		this.salami = salami;
-	}
-	public Ham getRaw() {
-		return raw;
-	}
-	public void setRaw(Ham raw) {
-		this.raw = raw;
-	}
-	public Ham getCooked() {
-		return cooked;
-	}
-	public void setCooked(Ham cooked) {
-		this.cooked = cooked;
-	}
-	public Cheese getDanbo() {
-		return danbo;
-	}
-	public void setDanbo(Cheese danbo) {
-		this.danbo = danbo;
-	}
-	public Cheese getCheddar() {
-		return cheddar;
-	}
-	public void setCheddar(Cheese cheddar) {
-		this.cheddar = cheddar;
-	}
 	
 	
 }

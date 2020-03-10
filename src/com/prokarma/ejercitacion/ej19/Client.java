@@ -28,6 +28,10 @@ public class Client {
 		}
 	}
 	
+	public void addOrder(Order order) {
+		this.setOrder(order);
+	}
+	
 	public void assignOrderNumber(int number) {
 		this.orderNumber = number;
 	}
