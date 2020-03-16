@@ -1,51 +1,65 @@
 package com.prokarma.ejercitacion.ej19;
 
+import java.util.List;
+
 public class Sandwich {
 	
-	private String type;
-	private int price;
-	private boolean state;
-	private Bread bread;
-	
-	public Sandwich(String type, int price) {
-		this.type = type;
-		this.price = price;
-		this.state = false;//por preparar
-	}
-	
+	 private List<Ingredient> ingredients;
+	    private Boolean isReady;
+	    private int price ;
+	    private int idSandwich;
 
-	public void addBread(Bread bread) {
-		this.setBread(bread);
-	}
+	    public Sandwich(int id, int price, List<Ingredient> ingredients){
+	        this.idSandwich = id;
+	        this.ingredients = ingredients;
+	        this.price = price;
+	        this.isReady = false;
+	    }
+
+	    public void addIngredients(Ingredient ingredient){
+	        this.ingredients.add(ingredient);
+	    }
+
+
+	    public List<Ingredient> getIngredients() {
+	        return ingredients;
+	    }
+
+	    public void setIngredients(List<Ingredient> ingredients) {
+	        this.ingredients = ingredients;
+	    }
+
+	    public Boolean getReady() {
+	        return isReady;
+	    }
+
+	    public void setReady(Boolean ready) {
+	        isReady = ready;
+	    }
+
+	    public int getPrice() {
+	        return price;
+	    }
+
+	    public void setPrice(int price) {
+	        this.price = price;
+	    }
+
+	    public int getIdSandwich() {
+	        return idSandwich;
+	    }
+
+	    public void setIdSandwich(int idSandwich) {
+	        this.idSandwich = idSandwich;
+	    }
+
+	    public String toString(){
+	        return this.idSandwich + ")" +
+	                " $" + this.price +
+	                " which has " + this.ingredients.toString();
+	    }
+
 	
-	public String getType() {
-		return type;
-	}
-	public void setType(String type) {
-		this.type = type;
-	}
-	public int getPrecio() {
-		return price;
-	}
-	public void setPrecio(int precio) {
-		this.price = precio;
-	}
-	public boolean isState() {
-		return state;
-	}
-	public void setState(boolean state) {
-		this.state = state;
-	}
-	public Bread getBread() {
-		return bread;
-	}
-	public void setBread(Bread bread) {
-		this.bread = bread;
-	}
 	
-	
-	public String toString() {
-		return "Sandwich: " + this.type;
-	}
 	
 }

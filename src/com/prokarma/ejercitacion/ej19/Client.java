@@ -2,65 +2,47 @@ package com.prokarma.ejercitacion.ej19;
 
 public class Client {
 	
-	private static final int CASH = 1;
-	
-	private int orderNumber;
-	private Order order;
-	private int cash;
-	private Payment payment;
-	
-	public Client(int cash) {
-		this.cash = cash;
-	}
+	  private static final int CASH = 1;
+	    private static final String PAY_1 = "cash";
+	    private static final String PAY_2 = "credit card";
 
-	public int pay(int typePay, int amount) throws NotEnoughCashException {
-		if(typePay == CASH) {
-			this.payment = new Cash();
-			if(this.cash < amount) {
-				throw new NotEnoughCashException("You dont have enough money to pay");
-			}else {
-				this.cash -= amount;
-				return payment.pay(amount);
-			}
-		}else {
-			this.payment = new CreditCard();
-			return this.payment.pay(amount);
-		}
-	}
-	
-	public void addOrder(Order order) {
-		this.setOrder(order);
-	}
-	
-	public void assignOrderNumber(int number) {
-		this.orderNumber = number;
-	}
-	
-	public int getTicketNumber() {
-		return orderNumber;
-	}
-	public void setTicketNumber(int ticketNumber) {
-		this.orderNumber = ticketNumber;
-	}
-	public int getCash() {
-		return cash;
-	}
-	public void setCash(int cash) {
-		this.cash = cash;
-	}
-	public Order getOrder() {
-		return order;
-	}
-	public void setOrder(Order order) {
-		this.order = order;
-	}
-	public Payment getPayment() {
-		return payment;
-	}
-	public void setPayment(Payment payment) {
-		this.payment = payment;
-	}
-	
-	
-	
+	    private int availableAmount;
+	    private Payment payment;
+
+	    public Client(int availableAmount) {
+	        this.availableAmount = availableAmount;
+	    }
+
+	    public int pay(String typePay, int amount) throws NotEnoughCashException {
+	        if(typePay.equalsIgnoreCase(PAY_1)) {
+	            this.payment = new Cash();
+	            if(this.availableAmount < amount) {
+	                throw new NotEnoughCashException("You do not have enough money to pay");
+	            }else {
+	                this.availableAmount -= amount;
+	                return payment.pay(amount);
+	            }
+	        }else {
+	            this.payment = new CreditCard();
+	            return this.payment.pay(amount);
+	        }
+	    }
+
+	    public int intRandom(){
+	        int num;
+	        num = (int)(Math.random()*(5-1+1)+1);
+	        System.out.println("i want " + num + " sandwich");
+	        return num;
+	    }
+
+	    public String typePayRandom(){
+	        if((int)(Math.random()*(2-1+1)+1) == CASH){
+	                System.out.println("I want to pay " + PAY_1);
+	            return "cash";
+	        }else{
+	                System.out.println("I want to pay " + PAY_2);
+	            return "credit card";
+	        }
+
+	    }
 }

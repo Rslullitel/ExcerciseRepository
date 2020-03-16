@@ -3,7 +3,7 @@ package com.prokarma.ejercitacion.ej14;
 import com.prokarma.ejercitacion.ej14.exceptions.CuentaBloqueadaException;
 import com.prokarma.ejercitacion.ej14.exceptions.SinSaldoException;
 
-public class EstadoBloqueada implements Estado{
+public class EstadoBloqueada extends Estado{
 
 
 	@Override
