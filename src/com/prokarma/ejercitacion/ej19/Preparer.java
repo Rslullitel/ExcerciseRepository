@@ -5,7 +5,8 @@ import java.util.concurrent.BlockingQueue;
 public class Preparer extends Thread{
 
 	   private BlockingQueue<Order> orders;
-	    private int cantClients;
+	   private int cantClients;
+	   
 
 	    public Preparer(BlockingQueue<Order> orders, int cantClients){
 	        this.orders = orders;
@@ -14,10 +15,13 @@ public class Preparer extends Thread{
 
 	    @Override
 	    public void run(){
-	        for(int i = 0; i < cantClients; i++){
+	    	int i = 0;
+	    	
+	        while(i < cantClients && Test.stop){
 	            while (this.orders.isEmpty()) {
 	            }
 	            deliverOrder(this.orders.poll());
+	            i++;
 	        }
 
 	    }
@@ -30,38 +34,3 @@ public class Preparer extends Thread{
 	        System.out.println("the order has been delivered !");
 	    }
 }
-
-
-
-/*public Preparer(BlockingQueue<Ticket> tickets) {
-	super(tickets);
-	window = new Window();
-}
-
-@Override
-public void run() {
-	Ticket ticket;
-	
-	for(int i = 0; i < 20; i++) {
-		while(this.getTickets().isEmpty()) {
-		}
-		ticket = this.pollTicket();
-		for(int j = 0; j < ticket.getSandwiches().size(); j++) {
-			finalizeOrder(ticket.getSandwiches().get(j));
-		}
-		ticket.changeStateOrder();
-			System.out.println(ticket.toString());
-			System.out.println("Bye, have a nice day");
-		time();	
-	}
-}*/
-
-
-
-
-
-
-
-
-
-

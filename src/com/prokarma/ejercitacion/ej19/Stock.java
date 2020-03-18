@@ -9,6 +9,10 @@ public class Stock {
         this.idSandwich = id;
         this.stockQuantity = stock;
     }
+    
+    public void decreaseQuantity() {
+    	this.stockQuantity -= 1;
+    }
 
     public int getIdSandwich() {
         return idSandwich;

@@ -14,8 +14,11 @@ public class ClientGenerator extends Thread{
 
     @Override
     public void run() {
-        for(int i = 0; i < cantClients; i++) {
+    	int i = 0;
+    	
+        while(i < cantClients && Test.stop) {
             this.clients.add(new Client(cashRandom()));
+            i++;
             time();
         }
     }
