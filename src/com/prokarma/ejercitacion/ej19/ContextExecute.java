@@ -7,14 +7,10 @@ import java.util.TreeMap;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-public class Test {
+public class ContextExecute {
 
-	volatile static boolean stop = true;
+	public static volatile boolean continued = true;
 	
-	public static void main(String[] args){
-		// TODO Auto-generated method stub
-
-		
         int cantClients = clientsRandom();
         BlockingQueue<Order> orders = new ArrayBlockingQueue<Order>(1024);
         BlockingQueue<Client> clients = new ArrayBlockingQueue<Client>(1024);
@@ -23,11 +19,12 @@ public class Test {
         Cashier cashier = new Cashier(orders, clients, generateStocks(), generateSandwiches(), cantClients);
         Preparer preparer = new Preparer(orders, cantClients);
 
+        
+    public void start() {
         generator.start();
     	cashier.start();
     	preparer.start();
-
-	}	
+    }
 
     private static int clientsRandom() {
         return (int)(Math.random()*(40-1+1)+1);

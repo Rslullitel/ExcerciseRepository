@@ -28,13 +28,11 @@ public class Cashier extends Thread{
 	        List<Sandwich> mySandwiches;
 	        Client client;
 	        Sandwich sandwich;
-	        String typePay;
-	        boolean paymentOk;
 	        boolean existStock = false;
 	        int num;
 	        int j = 0;
 	        
-	        while(j < cantClients && !this.stocks.isEmpty()){
+	        while(j < cantClients && ContextExecute.continued){
 	            int totalAmount = 0;
 	            while(this.clients.isEmpty()){
 	            }
@@ -46,37 +44,30 @@ public class Cashier extends Thread{
 	            showMenu();
 	            for(int i = 0; i < num; i++){
 	            	do {
-		            	try {
+	            		try {
 		            		sandwich = selectSandwich(sandwichRandom());
-		            		decreaseStock(sandwich);
-		            		totalAmount += sandwich.getPrice();
-		            		mySandwiches.add(sandwich);
-		            		existStock = true;
+		            		if(sandwich == null) {
+		            			existStock = false;
+		            		}else {
+		            			existStock = true;
+		            			decreaseStock(sandwich);
+			            		totalAmount += sandwich.getPrice();
+			            		mySandwiches.add(sandwich);
+		            		}
 		            	} catch (NoMoreStockException e) {
-		            		System.out.println(e.getMessage());
-		            		Test.stop = false;
-		            	}catch (NoSandwichStockException e) {
-		            		System.out.println(e.getMessage());
-		            		existStock = false;
-		            	} 		      
+		            			System.out.println(e.getMessage());
+		            		ContextExecute.continued = false;
+		            	}
 	            	}while(!existStock);
 		        }  
-	            do{
-		            System.out.println("How do you want to pay?");
-		            typePay = client.typePayRandom();
-		            try {
-		                this.sendOrder(new Order(mySandwiches, charge(typePay, client.pay(typePay, totalAmount))));
-		                paymentOk = true;
-		            } catch (NotEnoughCashException e) {
-		                System.out.println(e.getMessage());
-		                paymentOk = false;
-		            }
-	            }while(!paymentOk);
+		            System.out.println("The total amount is $" + totalAmount);
+		        this.sendOrder(new Order(mySandwiches, charge(client.pay(totalAmount), client.showPay())));
 	            j++;
 	        }
 	        System.out.println("The cashbox have: " + this.cashBox + " pesos");
 	    }
 
+	    
 	    private void decreaseStock(Sandwich sandwich) {
 	        Stock stock;
 	        
@@ -92,34 +83,28 @@ public class Cashier extends Thread{
 	    }
 
 	    
-	    private Ticket charge(String typePay, int totalAmount){
+	    private Ticket charge(int totalAmount, String typePay){
 	       return this.cashBox.generateTicket(totalAmount, typePay);
 	    }
 	    
 
-	    private Sandwich selectSandwich(int id) throws NoMoreStockException, NoSandwichStockException{
-	        Sandwich sandwich;
-	        
+	    private Sandwich selectSandwich(int id) throws NoMoreStockException {
+	        Sandwich sandwich = null;
+
 	        if(this.stocks.isEmpty()) {
-	    		throw new NoMoreStockException("You are out of stock");	
-	        }else if(!thereStock(id)) {
-	        	throw new NoSandwichStockException("No more stock of the sandwich number " + id);
-	        }else {
-	        	sandwich = this.sandwiches.get(id);
-	 	            System.out.println("You choose sandwich number " + sandwich);
-	 	     return sandwich;
+	        	throw new NoMoreStockException("You are out of stock");
 	        }
+	        	if(!thereStock(id)) {
+		        	System.out.println("No more stock of the sandwich number " + id);
+		        }else {
+		        	sandwich = this.sandwiches.get(id);
+		 	            System.out.println("You choose sandwich number " + sandwich.getIdSandwich());
+		        }
+	        return sandwich;
 	    }
 	    
-	    private boolean thereStock(int id) throws NoMoreStockException {
-	    	boolean ans;
-
-	    	if(this.stocks.containsKey(id)) {
-			    ans = true;
-	    	}else {
-	    		ans = false;
-	    	}
-		    return ans;
+	    private boolean thereStock(int id) {
+	    	return this.stocks.containsKey(id);
 	    }
 
 	    private void showMenu(){

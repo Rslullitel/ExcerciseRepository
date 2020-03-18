@@ -54,8 +54,7 @@ public class Sandwich {
 	    }
 
 	    public String toString(){
-	        return this.idSandwich + ")" +
-	                " $" + this.price +
+	        return 	" $" + this.price +
 	                " which has " + this.ingredients.toString();
 	    }
 

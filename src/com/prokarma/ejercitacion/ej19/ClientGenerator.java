@@ -16,7 +16,7 @@ public class ClientGenerator extends Thread{
     public void run() {
     	int i = 0;
     	
-        while(i < cantClients && Test.stop) {
+        while(i < cantClients && ContextExecute.continued) {
             this.clients.add(new Client(cashRandom()));
             i++;
             time();

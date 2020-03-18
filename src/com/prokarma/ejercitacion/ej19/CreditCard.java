@@ -6,5 +6,10 @@ public class CreditCard implements Payment{
 	public int pay(int amount) {
 		return amount;
 	}
+	
+	
+	public String toString() {
+		return "credit card";
+	}
 
 }

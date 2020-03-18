@@ -6,5 +6,9 @@ public class Cash implements Payment{
 	public int pay(int amount) {
 		return amount;
 	}
+	
+	public String toString() {
+		return "cash";
+	}
 
 }

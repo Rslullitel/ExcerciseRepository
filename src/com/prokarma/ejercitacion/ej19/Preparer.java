@@ -17,7 +17,7 @@ public class Preparer extends Thread{
 	    public void run(){
 	    	int i = 0;
 	    	
-	        while(i < cantClients && Test.stop){
+	        while(i < cantClients && ContextExecute.continued){
 	            while (this.orders.isEmpty()) {
 	            }
 	            deliverOrder(this.orders.poll());
