@@ -5,23 +5,21 @@ import java.util.concurrent.BlockingQueue;
 public class Preparer extends Thread{
 
 	   private BlockingQueue<Order> orders;
-	   private int cantClients;
+	   private ExecutionContext executionContext;
 	   
 
-	    public Preparer(BlockingQueue<Order> orders, int cantClients){
+	    public Preparer(ExecutionContext executionContext, BlockingQueue<Order> orders){
 	        this.orders = orders;
-	        this.cantClients = cantClients;
+	        this.executionContext = executionContext;
 	    }
 
 	    @Override
 	    public void run(){
-	    	int i = 0;
-	    	
-	        while(i < cantClients && ContextExecute.continued){
-	            while (this.orders.isEmpty()) {
+	        while(!this.executionContext.isStopped()){
+	            if(!this.orders.isEmpty()) {
+	            	deliverOrder(this.orders.poll());
 	            }
-	            deliverOrder(this.orders.poll());
-	            i++;
+	            
 	        }
 
 	    }

@@ -6,17 +6,19 @@ public class ClientGenerator extends Thread{
 
     private BlockingQueue<Client> clients;
     private int cantClients;
+    private ExecutionContext executionContext;
 
-    public ClientGenerator(BlockingQueue<Client> clients, int cantClients) {
+    public ClientGenerator(ExecutionContext executionContext, BlockingQueue<Client> clients, int cantClients) {
         this.clients = clients;
         this.cantClients = cantClients;
+        this.executionContext = executionContext;
     }
 
     @Override
     public void run() {
     	int i = 0;
     	
-        while(i < cantClients && ContextExecute.continued) {
+        while(i < cantClients && !this.executionContext.isStopped()) {
             this.clients.add(new Client(cashRandom()));
             i++;
             time();

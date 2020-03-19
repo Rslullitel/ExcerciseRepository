@@ -12,15 +12,15 @@ public class Cashier extends Thread{
 	    private CashBox cashBox;
 	    private Map<Integer, Stock> stocks;
 	    private Map<Integer, Sandwich> sandwiches;
-	    private int cantClients;
+	    private ExecutionContext executionContext;
 
-	    public Cashier(BlockingQueue<Order> orders, BlockingQueue<Client> clients, Map<Integer, Stock> stocks, Map<Integer, Sandwich> sandwiches, int cantClients) {
+	    public Cashier(ExecutionContext executionContext, BlockingQueue<Order> orders, BlockingQueue<Client> clients, Map<Integer, Stock> stocks, Map<Integer, Sandwich> sandwiches) {
 	        this.orders = orders;
 	        this.clients = clients;
 	        this.cashBox = new CashBox();
 	        this.stocks = stocks;
 	        this.sandwiches = sandwiches;
-	        this.cantClients = cantClients;
+	        this.executionContext = executionContext;
 	    }
 
 	    @Override
@@ -30,41 +30,49 @@ public class Cashier extends Thread{
 	        Sandwich sandwich;
 	        boolean existStock = false;
 	        int num;
-	        int j = 0;
 	        
-	        while(j < cantClients && ContextExecute.continued){
+	        while(!this.executionContext.isStopped()){
 	            int totalAmount = 0;
-	            while(this.clients.isEmpty()){
-	            }
-	            mySandwiches = new ArrayList<Sandwich>();
-	            client = this.clients.poll();
-	            System.out.println("How many sandwich do yo want?");
-	            num = client.intRandom();
-	            System.out.println("Select the sandwich that you want");
-	            showMenu();
-	            for(int i = 0; i < num; i++){
-	            	do {
-	            		try {
-		            		sandwich = selectSandwich(sandwichRandom());
-		            		if(sandwich == null) {
-		            			existStock = false;
-		            		}else {
-		            			existStock = true;
-		            			decreaseStock(sandwich);
-			            		totalAmount += sandwich.getPrice();
-			            		mySandwiches.add(sandwich);
-		            		}
-		            	} catch (NoMoreStockException e) {
-		            			System.out.println(e.getMessage());
-		            		ContextExecute.continued = false;
-		            	}
-	            	}while(!existStock);
-		        }  
-		            System.out.println("The total amount is $" + totalAmount);
-		        this.sendOrder(new Order(mySandwiches, charge(client.pay(totalAmount), client.showPay())));
-	            j++;
+	            if(!this.clients.isEmpty()){
+		            mySandwiches = new ArrayList<Sandwich>();
+		            client = this.clients.poll();
+		            System.out.println("How many sandwich do yo want?");
+		            num = client.intRandom();
+		            System.out.println("Select the sandwich that you want");
+		            showMenu();
+		            if(this.stocks.isEmpty()) {
+			        	System.out.println("You are out of stock");
+	            		this.executionContext.stopExecution();
+			        }else {
+			        	for(int i = 0; i < num; i++){
+			            	do {
+				            	sandwich = selectSandwich(client.sandwichRandom());
+				           		if(sandwich == null) {
+				           			existStock = false;
+				           		}else {
+				           			existStock = true;
+				           			decreaseStock(sandwich);
+				           			totalAmount += sandwich.getPrice();
+				           			mySandwiches.add(sandwich);
+				           		}
+			            	}while(!existStock);
+				        }  
+			        }
+			            System.out.println("The total amount is $" + totalAmount);
+			        this.sendOrder(new Order(mySandwiches, charge(client.pay(totalAmount), client.showPay())));
+		        }else {
+		        	waitForClient();
+		        }
 	        }
 	        System.out.println("The cashbox have: " + this.cashBox + " pesos");
+	    }
+	    
+	    public void waitForClient() {
+	    	try {
+				sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 	    }
 
 	    
@@ -88,12 +96,9 @@ public class Cashier extends Thread{
 	    }
 	    
 
-	    private Sandwich selectSandwich(int id) throws NoMoreStockException {
+	    private Sandwich selectSandwich(int id) {
 	        Sandwich sandwich = null;
 
-	        if(this.stocks.isEmpty()) {
-	        	throw new NoMoreStockException("You are out of stock");
-	        }
 	        	if(!thereStock(id)) {
 		        	System.out.println("No more stock of the sandwich number " + id);
 		        }else {
@@ -112,9 +117,4 @@ public class Cashier extends Thread{
 	            System.out.println(s.toString());
 	        }
 	    }
-	    
-	    public int sandwichRandom() {
-	    	return (int)(Math.random()*(5-1+1)+1);
-	    }
-    
 }

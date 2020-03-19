@@ -29,6 +29,10 @@ public class Client {
 	        return num;
 	    }
 	    
+	    public int sandwichRandom() {
+	    	return (int)(Math.random()*(5-1+1)+1);
+	    }
+    
 	    public String showPay() {
 	    	return this.payment.toString();
 	    }
