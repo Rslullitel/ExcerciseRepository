@@ -10,15 +10,13 @@ public class Cashier extends Thread{
 	  private BlockingQueue<Order> orders;
 	    private BlockingQueue<Client> clients;
 	    private CashBox cashBox;
-	    private Map<Integer, Stock> stocks;
-	    private Map<Integer, Sandwich> sandwiches;
+	    private List<Sandwich> sandwiches;
 	    private ExecutionContext executionContext;
 
-	    public Cashier(ExecutionContext executionContext, BlockingQueue<Order> orders, BlockingQueue<Client> clients, Map<Integer, Stock> stocks, Map<Integer, Sandwich> sandwiches) {
+	    public Cashier(ExecutionContext executionContext, BlockingQueue<Order> orders, BlockingQueue<Client> clients, List<Sandwich> sandwiches) {
 	        this.orders = orders;
 	        this.clients = clients;
 	        this.cashBox = new CashBox();
-	        this.stocks = stocks;
 	        this.sandwiches = sandwiches;
 	        this.executionContext = executionContext;
 	    }
@@ -34,13 +32,13 @@ public class Cashier extends Thread{
 	        while(!this.executionContext.isStopped()){
 	            int totalAmount = 0;
 	            if(!this.clients.isEmpty()){
+	            	showMenu();
 		            mySandwiches = new ArrayList<Sandwich>();
 		            client = this.clients.poll();
 		            System.out.println("How many sandwich do yo want?");
 		            num = client.intRandom();
 		            System.out.println("Select the sandwich that you want");
-		            showMenu();
-		            if(this.stocks.isEmpty()) {
+		            if(this.stocks.isEmpty()) {//get all stock
 			        	System.out.println("You are out of stock");
 	            		this.executionContext.stopExecution();
 			        }else {
@@ -76,17 +74,11 @@ public class Cashier extends Thread{
 	    }
 
 	    
-	    private void decreaseStock(Sandwich sandwich) {
-	        Stock stock;
-	        
-	        stock = this.stocks.get(sandwich.getIdSandwich());
-	        stock.decreaseQuantity();  
-	        if(stock.getStockQuantity() == 0) {
-	        	this.stocks.remove(stock.getIdSandwich());
-	        }
+	    private void decreaseStock(Sandwich sandwich) {// update sandwich
+	    	//completar
 	    }
 
-	    private void sendOrder(Order order){
+	    private void sendOrder(Order order){//insert order
 	        this.orders.add(order);
 	    }
 
@@ -108,12 +100,12 @@ public class Cashier extends Thread{
 	        return sandwich;
 	    }
 	    
-	    private boolean thereStock(int id) {
-	    	return this.stocks.containsKey(id);
+	    private boolean thereStock(int id) {//get stock SandwichDAO
+	    	return false;
 	    }
 
 	    private void showMenu(){
-	        for(Map.Entry<Integer, Sandwich> s : this.sandwiches.entrySet()){
+	        for(Sandwich s : this.sandwiches){
 	            System.out.println(s.toString());
 	        }
 	    }

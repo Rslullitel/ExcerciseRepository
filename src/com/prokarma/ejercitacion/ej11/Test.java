@@ -21,6 +21,15 @@ public static final String MSG_ERR = "Los simbolos no se encuentran equilibrados
 		}else {
 			System.out.println(MSG_ERR);
 		}
+	
+		System.out.println("queres que busque la comida?");
+		try {
+			Thread.sleep(5000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("chupame la verga");
 		
 	}
 	

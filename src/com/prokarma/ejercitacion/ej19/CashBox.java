@@ -17,10 +17,10 @@ public class CashBox {
         return ticket;
     }
 
-    public void saveTicket(Ticket ticket){
+    public void saveTicket(Ticket ticket){//insert ticket into database
         this.tickets.add(ticket);
     }
-
+    
     public int calculateTotal(){
         int total = 0;
         for (int i = 0 ; i < tickets.size() ; i++){

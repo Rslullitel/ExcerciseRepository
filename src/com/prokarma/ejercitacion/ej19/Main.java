@@ -1,39 +1,41 @@
 package com.prokarma.ejercitacion.ej19;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import com.prokarma.ejercitacion.ej19.dao.DAO;
+import com.prokarma.ejercitacion.ej19.dao.MySqlDAOFactory;
+import com.prokarma.ejercitacion.ej19.exception.DataBaseException;
+
 public class Main {
 	
-	
 	public static void main(String[] args) {
+
+		ExecutionContext app = null;
 		
-		ExecutionContext app = new ExecutionContext(generateStocks(), generateSandwiches());		
+		try {
+			app = new ExecutionContext(generateSandwiches());
+			Thread.sleep(5000);
+		} catch (InterruptedException | DataBaseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		app.startExecution();
 	}
 
-	
-
-    public static Map<Integer, Stock> generateStocks(){
-        Map<Integer, Stock> stocks = new TreeMap<Integer, Stock>();
-        stocks.put(1, new Stock(1, 10));//0 posicion = get(i)
-        stocks.put(2, new Stock(2, 10));//1
-        stocks.put(3, new Stock(3, 7));//2
-        stocks.put(4, new Stock(4, 5));//3
-        stocks.put(5, new Stock(5, 5));//4
-        return stocks;
-    }
-
-    public static Map<Integer, Sandwich> generateSandwiches(){
-        Map<Integer, Sandwich> sandwiches = new TreeMap<Integer, Sandwich>();
-        sandwiches.put(1, new Sandwich(1, 150, new ArrayList<Ingredient>(Arrays.asList(new Ingredient("rawHam"), new Ingredient("danbo")))));
-        sandwiches.put(2, new Sandwich(2, 200, new ArrayList<Ingredient>(Arrays.asList(new Ingredient("rawHam"), new Ingredient("cheddar")))));
-        sandwiches.put(3, new Sandwich(3, 170, new ArrayList<Ingredient>(Arrays.asList(new Ingredient("cookedHam"), new Ingredient("cheddar")))));
-        sandwiches.put(4, new Sandwich(4, 120, new ArrayList<Ingredient>(Arrays.asList(new Ingredient("cookedHam"), new Ingredient("danbo")))));
-        sandwiches.put(5, new Sandwich(5, 100, new ArrayList<Ingredient>(Arrays.asList(new Ingredient("salami"), new Ingredient("danbo")))));
-        return sandwiches;
+    public static List<Sandwich> generateSandwiches() throws DataBaseException{
+    	List<Sandwich> sandwiches = new ArrayList<Sandwich>();
+    	MySqlDAOFactory myDAO = new MySqlDAOFactory();
+    	DAO sandwichDAO = myDAO.getSandwichDAO();
+       return sandwichDAO.getAll();
     }
 	
 }

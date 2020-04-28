@@ -9,7 +9,7 @@ public class Logger {
 	
 	private static final String DOMINIO = "/facebook_log_" +
 			 						new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + "_" +
-			 						new SimpleDateFormat("HH.mm.ss").format(new Date()) + ".log";
+			 						new SimpleDateFormat("HH:mm:ss").format(new Date()) + ".log";
 
 	private ManejoArchivo manejador;
 	
