@@ -24,6 +24,8 @@ public class SandwichDAO implements DAO<Sandwich, Integer> {
     								   + "ON sh.id_ingredient = I.id ";
     
     private static final String GET_STOCK_SANDWICH = "SELECT stock FROM sandwich WHERE id_Sandwich = ?";
+    private static final String GET_ALL_STOCK_SANDWICH = "SELECT SUM(stock) as stock FROM sandwich";
+    private static final String DECREASE_STOCK_SANDWICH = "UPDATE sandwich SET stock = stock-1 WHERE id_Sandwich = ?";
     
 	@Override
 	public boolean insert(Sandwich t) {
@@ -41,13 +43,57 @@ public class SandwichDAO implements DAO<Sandwich, Integer> {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	@Override
-	public Integer getOne(Integer id_Sandwich) throws DataBaseException {
+	
+	public void decreaseStock(int id) throws DataBaseException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		int stock = 0;
+		
+		try {
+			conn = MySqlDAOFactory.openConnection();
+			ps = conn.prepareStatement(DECREASE_STOCK_SANDWICH);
+			ps.setInt(1, id);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				System.out.println("Stock decreased from sandwich number " + id);
+			}else {
+				System.out.println("No stock selected");
+			}
+		}catch(SQLException e) {
+			throw new DataBaseException(e);
+		}finally {
+			MySqlDAOFactory.closeConnections(conn, ps, rs);
+		}
+	}
+	
+	public int getAllStock() throws DataBaseException {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int stock = -1;
+		
+		try {
+			conn = MySqlDAOFactory.openConnection();
+			ps = conn.prepareStatement(GET_ALL_STOCK_SANDWICH);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				stock = rs.getInt("stock");	
+			}else {
+				System.out.println("No stock selected");
+			}
+		}catch(SQLException e) {
+			throw new DataBaseException(e);
+		}finally {
+			MySqlDAOFactory.closeConnections(conn, ps, rs);
+		}
+     return stock;
+	}
+	
+	public int getStock(Integer id_Sandwich) throws DataBaseException {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		int stock = -1;
 		
 		try {
 			conn = MySqlDAOFactory.openConnection();
@@ -65,6 +111,31 @@ public class SandwichDAO implements DAO<Sandwich, Integer> {
 			MySqlDAOFactory.closeConnections(conn, ps, rs);
 		}
      return stock;
+	}
+
+	@Override
+	public Sandwich getOne(Integer id_Sandwich) throws DataBaseException {
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		Sandwich sandwich = null;
+		
+		try {
+			conn = MySqlDAOFactory.openConnection();
+			ps = conn.prepareStatement(GET_STOCK_SANDWICH);
+			ps.setInt(1, id_Sandwich);
+			rs = ps.executeQuery();
+			if(rs.next()) {
+				sandwich = create(rs);	
+			}else {
+				System.out.println("No stock selected");
+			}
+		}catch(SQLException e) {
+			throw new DataBaseException(e);
+		}finally {
+			MySqlDAOFactory.closeConnections(conn, ps, rs);
+		}
+     return sandwich;
 	}
 	
 

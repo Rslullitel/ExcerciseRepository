@@ -3,7 +3,11 @@ package com.prokarma.ejercitacion.ej19;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.concurrent.BlockingQueue;
+
+import com.prokarma.ejercitacion.ej19.bo.FacadeDAO;
+import com.prokarma.ejercitacion.ej19.exception.DataBaseException;
 
 public class Cashier extends Thread{
 	
@@ -12,13 +16,15 @@ public class Cashier extends Thread{
 	    private CashBox cashBox;
 	    private List<Sandwich> sandwiches;
 	    private ExecutionContext executionContext;
+	    private FacadeDAO facade;
 
-	    public Cashier(ExecutionContext executionContext, BlockingQueue<Order> orders, BlockingQueue<Client> clients, List<Sandwich> sandwiches) {
+	    public Cashier(ExecutionContext executionContext, BlockingQueue<Order> orders, BlockingQueue<Client> clients, List<Sandwich> sandwiches, FacadeDAO facade) {
 	        this.orders = orders;
 	        this.clients = clients;
-	        this.cashBox = new CashBox();
+	        this.cashBox = new CashBox(facade);
 	        this.sandwiches = sandwiches;
 	        this.executionContext = executionContext;
+	        this.facade = facade;
 	    }
 
 	    @Override
@@ -38,7 +44,7 @@ public class Cashier extends Thread{
 		            System.out.println("How many sandwich do yo want?");
 		            num = client.intRandom();
 		            System.out.println("Select the sandwich that you want");
-		            if(this.stocks.isEmpty()) {//get all stock
+		            if(!this.thereAllStock()) {//get all stock
 			        	System.out.println("You are out of stock");
 	            		this.executionContext.stopExecution();
 			        }else {
@@ -54,7 +60,8 @@ public class Cashier extends Thread{
 				           			mySandwiches.add(sandwich);
 				           		}
 			            	}while(!existStock);
-				        }  
+				        }
+			        	this.stockCounter(mySandwiches);
 			        }
 			            System.out.println("The total amount is $" + totalAmount);
 			        this.sendOrder(new Order(mySandwiches, charge(client.pay(totalAmount), client.showPay())));
@@ -62,7 +69,24 @@ public class Cashier extends Thread{
 		        	waitForClient();
 		        }
 	        }
-	        System.out.println("The cashbox have: " + this.cashBox + " pesos");
+	    }
+	    
+	    public Map<Integer, Integer> stockCounter(List<Sandwich> sandwiches){
+	    	Map<Integer, Integer> stocks = new TreeMap<Integer, Integer>();
+	    	int index;
+	    	for(int i = 0; i < sandwiches.size(); i++) {
+	    		int stockQuantity = 0;
+	    		index = sandwiches.get(i).getIdSandwich();
+	    		if(!stocks.containsKey(index)) {
+	    			for(int j = 0; j < sandwiches.size(); j++) {
+		    			if(sandwiches.get(j).getIdSandwich() == index) {
+		    				stockQuantity += 1;
+		    			}
+		    		}
+	    		}
+	    		stocks.put(index, stockQuantity);//1. 3. 1. 3
+	    	}
+	    	return stocks;
 	    }
 	    
 	    public void waitForClient() {
@@ -74,11 +98,20 @@ public class Cashier extends Thread{
 	    }
 
 	    
-	    private void decreaseStock(Sandwich sandwich) {// update sandwich
-	    	//completar
+	    private void decreaseStock(Sandwich sandwich) {
+	    	try {
+				this.facade.decreaseStock(sandwich.getIdSandwich());
+			} catch (DataBaseException e) {
+				System.out.println(e.getMessage());
+			}
 	    }
 
-	    private void sendOrder(Order order){//insert order
+	    private void sendOrder(Order order){
+	    	try {
+				this.facade.addOrder(order);
+			} catch (DataBaseException e) {
+				System.out.println(e.getMessage());
+			}
 	        this.orders.add(order);
 	    }
 
@@ -91,17 +124,33 @@ public class Cashier extends Thread{
 	    private Sandwich selectSandwich(int id) {
 	        Sandwich sandwich = null;
 
-	        	if(!thereStock(id)) {
+	        	if(!thereSandwichStock(id)) {
 		        	System.out.println("No more stock of the sandwich number " + id);
 		        }else {
-		        	sandwich = this.sandwiches.get(id);
+		        	sandwich = this.sandwiches.get(id-1);
 		 	            System.out.println("You choose sandwich number " + sandwich.getIdSandwich());
 		        }
 	        return sandwich;
 	    }
 	    
-	    private boolean thereStock(int id) {//get stock SandwichDAO
-	    	return false;
+	    private boolean thereSandwichStock(int id) {
+	    	boolean resp = false;
+	    	try {
+				resp = (this.facade.getStockSandwich(id) != 0);
+			} catch (DataBaseException e) {
+				System.out.println(e.getMessage());
+			}
+	    	return resp;
+	    }
+	    
+	    private boolean thereAllStock() {
+	    	boolean resp = false;
+	    	try {
+				resp = (this.facade.getAllStockSandwich() != 0);
+			} catch (DataBaseException e) {
+				System.out.println(e.getMessage());
+			}
+	    	return resp;
 	    }
 
 	    private void showMenu(){

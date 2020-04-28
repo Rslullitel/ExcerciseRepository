@@ -19,9 +19,7 @@ public class Preparer extends Thread{
 	            if(!this.orders.isEmpty()) {
 	            	deliverOrder(this.orders.poll());
 	            }
-	            
 	        }
-
 	    }
 
 	    private void deliverOrder (Order order){

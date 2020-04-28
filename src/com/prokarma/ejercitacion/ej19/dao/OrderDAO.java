@@ -22,6 +22,7 @@ public class OrderDAO implements DAO<Order, Integer>{
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		boolean saved = false;
 		
 		try {
 			conn = MySqlDAOFactory.openConnection();
@@ -29,6 +30,7 @@ public class OrderDAO implements DAO<Order, Integer>{
 			ps.setInt(1, o.getTicket().getNumber());
 			if(ps.executeUpdate() != 0) {
 				System.out.println("Order saved succesfully");
+				saved = true;
 			}else {
 				throw new DataBaseException("Error to save the product");
 			}
@@ -37,7 +39,7 @@ public class OrderDAO implements DAO<Order, Integer>{
 		}finally {
 			MySqlDAOFactory.closeConnections(conn, ps, rs);
 		}
-		return true;
+		return saved;
 	}
 
 	@Override

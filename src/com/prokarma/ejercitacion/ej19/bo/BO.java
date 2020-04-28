@@ -1,12 +1,12 @@
-package com.prokarma.ejercitacion.ej19.dto;
+package com.prokarma.ejercitacion.ej19.bo;
 
 import com.prokarma.ejercitacion.ej19.dao.MySqlDAOFactory;
 
-public abstract class DTO {
+public abstract class BO {
 
 	protected MySqlDAOFactory mySql;
 	
-	public DTO() {
+	public BO() {
 		mySql = new MySqlDAOFactory();
 	}
 	
