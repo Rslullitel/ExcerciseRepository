@@ -1,15 +1,20 @@
 package com.prokarma.ejercitacion.ej19;
 
 
-import com.prokarma.ejercitacion.ej19.bo.FacadeDAO;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.prokarma.ejercitacion.ej19.dao.TicketDAO;
 import com.prokarma.ejercitacion.ej19.exception.DataBaseException;
 
 public class CashBox {
 	
-	private FacadeDAO facade;
+	private List<Ticket> tickets;
+	private TicketDAO ticketDAO;
 	
-	public CashBox(FacadeDAO facade) {
-		this.facade = facade;
+	public CashBox() {
+		this.tickets = new ArrayList<Ticket>();
+		this.ticketDAO = new TicketDAO();
 	}
 
     public Ticket generateTicket(int amount, String typePay){
@@ -19,22 +24,22 @@ public class CashBox {
     }
 
     public void saveTicket(Ticket ticket){//insert ticket into database
-        try {
-			this.facade.addTicket(ticket);
+    	try {
+			this.ticketDAO.insert(ticket);
 		} catch (DataBaseException e) {
 			System.out.println(e.getMessage());
 		}
     }
     
-  /*  public int calculateTotal(){
+    public int calculateTotal(){
         int total = 0;
         for (int i = 0 ; i < tickets.size() ; i++){
            total += tickets.get(i).getAmount();
         }
         return total;
-    }*/
+    }
     
-   /* public String toString() {
+    public String toString() {
     	return "$ " + calculateTotal();
-    }*/
+    }
 }

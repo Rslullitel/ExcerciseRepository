@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.prokarma.ejercitacion.ej19.Ingredient;
 import com.prokarma.ejercitacion.ej19.Sandwich;
@@ -25,7 +26,7 @@ public class SandwichDAO implements DAO<Sandwich, Integer> {
     
     private static final String GET_STOCK_SANDWICH = "SELECT stock FROM sandwich WHERE id_Sandwich = ?";
     private static final String GET_ALL_STOCK_SANDWICH = "SELECT SUM(stock) as stock FROM sandwich";
-    private static final String DECREASE_STOCK_SANDWICH = "UPDATE sandwich SET stock = stock-1 WHERE id_Sandwich = ?";
+    private static final String DECREASE_STOCK_SANDWICH = "UPDATE sandwich SET stock = stock - ?  WHERE id_Sandwich = ?";
     
 	@Override
 	public boolean insert(Sandwich t) {
@@ -44,20 +45,22 @@ public class SandwichDAO implements DAO<Sandwich, Integer> {
 		return false;
 	}
 	
-	public void decreaseStock(int id) throws DataBaseException {
+	public void decreaseStock(Map<Integer, Integer> stocks) throws DataBaseException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		
 		try {
 			conn = MySqlDAOFactory.openConnection();
-			ps = conn.prepareStatement(DECREASE_STOCK_SANDWICH);
-			ps.setInt(1, id);
-			rs = ps.executeQuery();
-			if(rs.next()) {
-				System.out.println("Stock decreased from sandwich number " + id);
-			}else {
-				System.out.println("No stock selected");
+			for (Map.Entry<Integer, Integer> s : stocks.entrySet()) {
+					ps = conn.prepareStatement(DECREASE_STOCK_SANDWICH);
+					ps.setInt(1, s.getValue());
+					ps.setInt(2, s.getKey());
+				if(ps.executeUpdate() != 0) {
+					System.out.println("Stock decreased from sandwich");
+				}else {
+					System.out.println("No stock selected");
+				}
 			}
 		}catch(SQLException e) {
 			throw new DataBaseException(e);
@@ -70,7 +73,7 @@ public class SandwichDAO implements DAO<Sandwich, Integer> {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		int stock = -1;
+		int stock = 0;
 		
 		try {
 			conn = MySqlDAOFactory.openConnection();

@@ -28,7 +28,7 @@ public static final String MSG_ERR = "Los simbolos no se encuentran equilibrados
 		ints.add(1);
 	
 	
-		for (Map.Entry<Integer, Integer> entry : stockCounter(ints).entrySet()) {
+		for (Map.Entry<Integer, Integer> entry : stocks.entrySet()) {
 		    System.out.println("clave=" + entry.getKey() + ", valor=" + entry.getValue());
 		}
 		System.out.println(stockCounter(ints).toString());
