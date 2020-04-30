@@ -145,17 +145,31 @@ public class SandwichDAO implements DAO<Sandwich, Integer> {
 	@Override
 	public List<Sandwich> getAll() {
 		List<Sandwich> sandwiches = new ArrayList<Sandwich>();
+		List<Ingredient> ingredients;
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		Sandwich sandwich;
+		int oldSandwichId = -1;
+		int price;
 		
 		try {
 			conn = MySqlDAOFactory.openConnection();
 			ps = conn.prepareStatement(GET_ALL_SANDWICHES);
 			rs = ps.executeQuery();
 			while(rs.next()) {
-				sandwiches.add(create(rs));
-			}
+				if(oldSandwichId == -1) {
+					oldSandwichId = rs.getInt("id_Sandwich");
+				}
+				price = rs.getInt("price");
+				ingredients = new ArrayList<Ingredient>();
+				do {
+					ingredients.add(new Ingredient(rs.getString("name")));
+				}while(rs.next() && oldSandwichId == rs.getInt("id_Sandwich"));
+					sandwiches.add(new Sandwich(oldSandwichId, price, ingredients));
+					oldSandwichId = rs.getInt("id_Sandwich");
+				    rs.previous(); // Se mueve a la posicion anterior para que el next de whil no me haga perder un registro
+				}
 		}catch(SQLException e) {
 			//throw new DAOException("Error in SQL", e);
 		}finally {
@@ -169,9 +183,11 @@ public class SandwichDAO implements DAO<Sandwich, Integer> {
 		List<Ingredient> ingredients = new ArrayList<Ingredient>();
 		int id_Sandwich = rs.getInt("id_Sandwich");
 		int price = rs.getInt("price");
+		int i = 0;
 		do {
+			i++;
 			ingredients.add(new Ingredient(rs.getString("name")));
-		}while(rs.next());
+		}while(rs.next() && i < 2);
 	return new Sandwich(id_Sandwich, price, ingredients);
 	}
 

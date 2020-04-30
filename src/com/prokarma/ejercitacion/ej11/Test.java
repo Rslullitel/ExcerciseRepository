@@ -20,48 +20,7 @@ public static final String MSG_ERR = "Los simbolos no se encuentran equilibrados
 		// TODO Auto-generated method stub
 
 		
-		List<Integer> ints = new ArrayList<Integer>();
-		ints.add(1);
-		ints.add(3);
-		ints.add(3);
-		ints.add(1);
-		ints.add(1);
-	
-	
-		for (Map.Entry<Integer, Integer> entry : stocks.entrySet()) {
-		    System.out.println("clave=" + entry.getKey() + ", valor=" + entry.getValue());
-		}
-		System.out.println(stockCounter(ints).toString());
-
-		
-	}		
-		
-	   public static Map<Integer, Integer> stockCounter(List<Integer> ints){
-	    	Map<Integer, Integer> stocks = new HashMap<Integer, Integer>();
-	    	int index;
-	    	int stockQuantity;
-	    	for(int i = 0; i < ints.size(); i++) {
-	    		stockQuantity = 0;
-	    		index = ints.get(i);
-	    		if(!stocks.containsKey(index)) {
-	    			for(int j = 0; j < ints.size(); j++) {
-		    			if(ints.get(j) == index) {
-		    				stockQuantity = stockQuantity + 1;
-		    			}
-		    		}
-	    		}
-	    		stocks.put(index, stockQuantity);//1. 3. 1. 3
-	    	}
-	    	return stocks;
-	    }
-}
-		
-		
-		
-		
-		
-		
-		/*Stack<String> pilaAbrePar = new Stack<String>();
+		Stack<String> pilaAbrePar = new Stack<String>();
 		
 		String cadena = "((5+5)*(5+5))";
 
@@ -116,4 +75,4 @@ public static final String MSG_ERR = "Los simbolos no se encuentran equilibrados
 		return cadenaCorrecta;	
 	}
 
-}*/
+}

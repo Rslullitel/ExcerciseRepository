@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.BlockingQueue;
 
+import com.prokarma.ejercitacion.ej19.dao.DAO;
+import com.prokarma.ejercitacion.ej19.dao.DAOFactory;
 import com.prokarma.ejercitacion.ej19.dao.OrderDAO;
 import com.prokarma.ejercitacion.ej19.dao.SandwichDAO;
 import com.prokarma.ejercitacion.ej19.exception.DataBaseException;
@@ -17,15 +19,17 @@ public class Cashier extends Thread {
 	private CashBox cashBox;
 	private List<Sandwich> sandwiches;
 	private ExecutionContext executionContext;
-	private SandwichDAO sandwichDAO;
+	private DAO sandwichDAO;
 	private OrderDAO orderDAO;
 
-	public Cashier(ExecutionContext executionContext, BlockingQueue<Order> orders, BlockingQueue<Client> clients, List<Sandwich> sandwiches) {
+	public Cashier(ExecutionContext executionContext, BlockingQueue<Order> orders, BlockingQueue<Client> clients, List<Sandwich> sandwiches, DAOFactory mySql) {
 		this.orders = orders;
 		this.clients = clients;
-		this.cashBox = new CashBox();
+		this.cashBox = new CashBox(mySql.getTicketDAO());
 		this.sandwiches = sandwiches;
 		this.executionContext = executionContext;
+		this.sandwichDAO = (SandwichDAO)mySql.getSandwichDAO();
+		this.orderDAO = (OrderDAO) mySql.getOrderDAO();
 	}
 
 	@Override
@@ -127,7 +131,7 @@ public class Cashier extends Thread {
 		if (!thereSandwichStock(id)) {
 			System.out.println("No more stock of the sandwich number " + id);
 		} else {
-			sandwich = this.sandwiches.get(id - 1);
+			sandwich = this.sandwiches.get(id-1);
 			System.out.println("You choose sandwich number " + sandwich.getIdSandwich());
 		}
 		return sandwich;
@@ -136,7 +140,7 @@ public class Cashier extends Thread {
 	private boolean thereSandwichStock(int id) {
 		boolean resp = false;
 		try {
-			resp = (this.sandwichDAO.getStock(id) != 0);
+			resp = (((SandwichDAO) this.sandwichDAO).getStock(id) != 0);
 		} catch (DataBaseException e) {
 			System.out.println(e.getMessage());
 		}
@@ -146,7 +150,7 @@ public class Cashier extends Thread {
 	private boolean thereAllStock() {
 		boolean resp = false;
 		try {
-			resp = (this.sandwichDAO.getAllStock() != 0);
+			resp = (((SandwichDAO) this.sandwichDAO).getAllStock() != 0);
 		} catch (DataBaseException e) {
 			System.out.println(e.getMessage());
 		}

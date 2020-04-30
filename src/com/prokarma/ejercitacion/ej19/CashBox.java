@@ -4,17 +4,17 @@ package com.prokarma.ejercitacion.ej19;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.prokarma.ejercitacion.ej19.dao.TicketDAO;
+import com.prokarma.ejercitacion.ej19.dao.DAO;
 import com.prokarma.ejercitacion.ej19.exception.DataBaseException;
 
 public class CashBox {
 	
 	private List<Ticket> tickets;
-	private TicketDAO ticketDAO;
+	private DAO ticketDAO;
 	
-	public CashBox() {
+	public CashBox(DAO ticketDAO) {
 		this.tickets = new ArrayList<Ticket>();
-		this.ticketDAO = new TicketDAO();
+		this.ticketDAO = ticketDAO;
 	}
 
     public Ticket generateTicket(int amount, String typePay){
