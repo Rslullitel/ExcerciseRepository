@@ -54,7 +54,9 @@ public class Cashier extends Thread {
 					System.out.println("You are out of stock");
 					this.executionContext.stopExecution();
 				} else {
-					for (int i = 0; i < num; i++) {
+					for (int i = 0; i < num; i++) {//en esta parte hay que crear un Map<Integer, integer> 
+												   //para asi guardar toda la cantidad de sandwiches de un mismo tipo
+												   //y descontarlas del stock y si no hay se tira excepcion y se rechaza la orden
 						do {
 							sandwich = selectSandwich(client.sandwichRandom());
 							if (sandwich == null) {
@@ -67,6 +69,7 @@ public class Cashier extends Thread {
 						} while (!existStock);
 					}
 					mapStocks = this.stockCounter(mySandwiches);
+					
 					decreaseStock(mapStocks);
 				}
 				System.out.println("The total amount is $" + totalAmount);
@@ -89,8 +92,8 @@ public class Cashier extends Thread {
 						stockQuantity += 1;
 					}
 				}
+				stocks.put(index, stockQuantity);
 			}
-			stocks.put(index, stockQuantity);//
 		}
 		return stocks;
 	}
@@ -124,7 +127,7 @@ public class Cashier extends Thread {
 		return this.cashBox.generateTicket(totalAmount, typePay);
 	}
 
-	private Sandwich selectSandwich(int id) {
+	private Sandwich selectSandwich(int id) {//1 . 2 . 4 . 1 --- stock 1 = 1 
 		Sandwich sandwich = null;
 
 		if (!thereSandwichStock(id)) {
