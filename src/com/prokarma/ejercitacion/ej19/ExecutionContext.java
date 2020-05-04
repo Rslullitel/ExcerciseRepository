@@ -5,8 +5,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
 import com.prokarma.ejercitacion.ej19.dao.DAOFactory;
-import com.prokarma.ejercitacion.ej19.dao.MySqlDAOFactory;
-
 
 public class ExecutionContext {
 

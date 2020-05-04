@@ -4,21 +4,22 @@ package com.prokarma.ejercitacion.ej19;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.prokarma.ejercitacion.ej19.dao.DAO;
+import com.prokarma.ejercitacion.ej19.dao.MySqlTicketDAO;
 import com.prokarma.ejercitacion.ej19.exception.DataBaseException;
 
 public class CashBox {
 	
 	private List<Ticket> tickets;
-	private DAO ticketDAO;
+	private MySqlTicketDAO ticketDAO;
+	private int ticketNumber = 1000;
 	
-	public CashBox(DAO ticketDAO) {
+	public CashBox(MySqlTicketDAO ticketDAO) {
 		this.tickets = new ArrayList<Ticket>();
 		this.ticketDAO = ticketDAO;
 	}
 
     public Ticket generateTicket(int amount, String typePay){
-        Ticket ticket = new Ticket(amount, typePay);
+        Ticket ticket = new Ticket(ticketNumber++, amount, typePay);
         saveTicket(ticket);
         return ticket;
     }

@@ -4,10 +4,9 @@ public abstract class DAOFactory {
 	
 	private static final int MySql = 1;
 
-	public abstract DAO getSandwichDAO();
-	public abstract DAO getOrderDAO();
-	public abstract DAO getTicketDAO();
-	public abstract DAO getOrderRegisterSandwichDAO();
+	public abstract MySqlSandwichDAO getSandwichDAO();
+	public abstract MySqlOrderDAO getOrderDAO();
+	public abstract MySqlTicketDAO getTicketDAO();
 	
 	public static DAOFactory getDAOFactory(int DB) {
 		switch(DB) {

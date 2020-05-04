@@ -9,8 +9,8 @@ public class Ticket {
 	private String typePay;
 	private Date date;
 
-	public Ticket(int amount, String typePay) {
-		this.number = number + 1;
+	public Ticket(int number, int amount, String typePay) {
+		this.number = number;
 		this.amount = amount;
 		this.typePay = typePay;
 		this.date = new Date(0);

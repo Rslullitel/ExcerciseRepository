@@ -16,23 +16,18 @@ public class MySqlDAOFactory extends DAOFactory {
 
 	
 	@Override
-	public DAO getSandwichDAO() {
+	public MySqlSandwichDAO getSandwichDAO() {
 		return new SandwichDAO();
 	}
 
 	@Override
-	public DAO getOrderDAO() {
+	public MySqlOrderDAO getOrderDAO() {
 		return new OrderDAO();
 	}
 
 	@Override
-	public DAO getTicketDAO() {
+	public MySqlTicketDAO getTicketDAO() {
 		return new TicketDAO();
-	}
-	
-	@Override
-	public DAO getOrderRegisterSandwichDAO() {
-		return new OrderRegisterSandwichDAO();
 	}
 	
 	
@@ -43,7 +38,7 @@ public class MySqlDAOFactory extends DAOFactory {
             Class.forName(DRIVER);
             conn = DriverManager.getConnection(URL, USER, PASS);
             if(conn != null){
-                System.out.println("Established Connection");
+                //System.out.println("Established Connection");
             }
         } catch (ClassNotFoundException | SQLException e) {
         	System.out.println("Invalid Connection");
@@ -55,10 +50,10 @@ public class MySqlDAOFactory extends DAOFactory {
 	public static void closeConnections(Connection conn, PreparedStatement ps, ResultSet rs) {
 		try {
 			conn.close();
-			rs.close();
+			//rs.close();
 			ps.close();
 		} catch (SQLException e) {
-			e.printStackTrace();//tirar excepcion 
+			e.printStackTrace();
 		}		
 	}
 
