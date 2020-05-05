@@ -18,6 +18,7 @@ public class CashierTest {
 
 	private static Cashier cashier;
 	private static List<Sandwich> sandwiches; 
+	private Sandwich sandwich;
 	
 	@BeforeClass
 	public static void tearDown() {
@@ -33,9 +34,16 @@ public class CashierTest {
 
 	@Test
 	public void test() throws DataBaseException {
-		Map<Integer, Integer> stocks = new TreeMap<Integer, Integer>();
-		stocks = cashier.stockCounter(sandwiches);
-		System.out.println(stocks.toString());
+		Map<Integer, Integer> mapStocks = new TreeMap<Integer, Integer>();
+		for(int i = 0; i < sandwiches.size(); i++) {
+			sandwich = sandwiches.get(i);
+			if(!mapStocks.containsKey(sandwich.getIdSandwich())) {
+				mapStocks.put(sandwich.getIdSandwich(), 1);
+			}else {
+				mapStocks.replace(sandwich.getIdSandwich(),mapStocks.get(sandwich.getIdSandwich())+1);
+			}
+		}
+		System.out.println(mapStocks.toString());
 	}
 
 }

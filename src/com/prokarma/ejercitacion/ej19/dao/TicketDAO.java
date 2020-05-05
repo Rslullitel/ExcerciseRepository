@@ -24,8 +24,8 @@ public class TicketDAO implements MySqlTicketDAO {
 			  ps.setInt(1, t.getNumber());
 			  ps.setInt(2, t.getAmount());
 			  ps.setString(3, t.getTypePay());
-			  ps.setTimestamp(4, t.getDate());// se cambio el tipo getDate a getTimestamp 
-			  if(ps.execute()) {
+			  ps.setTimestamp(4, t.getDate());
+			  if(ps.executeUpdate() != 0) {
 					System.out.println("Ticket saved succesfully");
 				}else {
 					throw new DataBaseException("Error saving the ticket");

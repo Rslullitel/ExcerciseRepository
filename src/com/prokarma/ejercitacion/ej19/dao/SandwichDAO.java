@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.prokarma.ejercitacion.ej19.Ingredient;
 import com.prokarma.ejercitacion.ej19.Sandwich;
+import com.prokarma.ejercitacion.ej19.exception.CanNotReciveDataException;
 import com.prokarma.ejercitacion.ej19.exception.DataBaseException;
 
 public class SandwichDAO implements MySqlSandwichDAO {
@@ -25,7 +26,7 @@ public class SandwichDAO implements MySqlSandwichDAO {
     private static final String DECREASE_STOCK_SANDWICH = "UPDATE sandwich SET stock = stock - ?  WHERE id_Sandwich = ?";
    
     
-	public void decreaseStock(Map<Integer, Integer> stocks) throws DataBaseException {
+	public void decreaseStock(Map<Integer, Integer> stocks) throws DataBaseException, CanNotReciveDataException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		
@@ -35,10 +36,8 @@ public class SandwichDAO implements MySqlSandwichDAO {
 					ps = conn.prepareStatement(DECREASE_STOCK_SANDWICH);
 					ps.setInt(1, s.getValue());
 					ps.setInt(2, s.getKey());
-				if(ps.executeUpdate() != 0) {
-					//System.out.println("Stock decreased from sandwich");
-				}else {
-					System.out.println("No stock selected");
+				if(ps.executeUpdate() == 0) {
+					throw new CanNotReciveDataException("Could not decrease the stock");
 				}
 			}
 		}catch(SQLException e) {
@@ -48,7 +47,7 @@ public class SandwichDAO implements MySqlSandwichDAO {
 		}
 	}
 	
-	public int getAllSandwichStock() throws DataBaseException {
+	public int getAllSandwichsStock() throws DataBaseException, CanNotReciveDataException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -61,7 +60,7 @@ public class SandwichDAO implements MySqlSandwichDAO {
 			if(rs.next()) {
 				stock = rs.getInt("stock");	
 			}else {
-				System.out.println("No stock selected");
+				throw new CanNotReciveDataException("No stock selected");
 			}
 		}catch(SQLException e) {
 			throw new DataBaseException(e);
@@ -72,69 +71,36 @@ public class SandwichDAO implements MySqlSandwichDAO {
 	}
 	
 	@Override
-	public boolean getSandwichStock(int id_Sandwich) throws DataBaseException {
+	public boolean getSandwichStock(Map<Integer, Integer> stocks) throws DataBaseException {//cambiar 
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		boolean stock = false;
+		boolean thereStock = true;
 		
 		try {
 			conn = MySqlDAOFactory.openConnection();
-			ps = conn.prepareStatement(GET_STOCK_SANDWICH);
-			ps.setInt(1, id_Sandwich);
-			rs = ps.executeQuery();
-			if(rs.next()) {
-				if(rs.getInt("stock") != 0) {
-					stock = true;
+			for (Map.Entry<Integer, Integer> s : stocks.entrySet()) {
+				ps = conn.prepareStatement(GET_STOCK_SANDWICH);
+				ps.setInt(1, s.getKey());
+				rs = ps.executeQuery();
+				if(rs.next()) {
+					if(rs.getInt("stock") < s.getValue()) {
+						thereStock = false;
+					}
+				}else {
+					System.out.println("No stock selected");
 				}
-			}else {
-				System.out.println("No stock selected");
 			}
 		}catch(SQLException e) {
 			throw new DataBaseException(e);
 		}finally {
 			MySqlDAOFactory.closeConnections(conn, ps, rs);
 		}
-     return stock;
+     return thereStock;
 	}
 
 	@Override
-	public Sandwich getOneSandwich(int id_Sandwich) throws DataBaseException {
-		List<Ingredient> ingredients;
-		Connection conn = null;
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		Sandwich sandwich = null;
-		int oldSandwichId = -1;
-		int price;
-		
-		try {
-			conn = MySqlDAOFactory.openConnection();
-			ps = conn.prepareStatement(GET_STOCK_SANDWICH);
-			ps.setInt(1, id_Sandwich);
-			rs = ps.executeQuery();
-			if(rs.next()) {
-				oldSandwichId = rs.getInt("id_Sandwich");
-				price = rs.getInt("price");
-				ingredients = new ArrayList<Ingredient>();
-				do {
-					ingredients.add(new Ingredient(rs.getString("name")));
-				}while(rs.next() && oldSandwichId == rs.getInt("id_Sandwich"));
-				sandwich = new Sandwich(oldSandwichId, price, ingredients);	
-			}else {
-				System.out.println("No stock selected");
-			}
-		}catch(SQLException e) {
-			throw new DataBaseException(e);
-		}finally {
-			MySqlDAOFactory.closeConnections(conn, ps, rs);
-		}
-     return sandwich;
-	}
-	
-
-	@Override
-	public List<Sandwich> getAllSandwiches() {
+	public List<Sandwich> getAllSandwiches() throws DataBaseException {
 		List<Sandwich> sandwiches = new ArrayList<Sandwich>();
 		List<Ingredient> ingredients;
 		Connection conn = null;
@@ -159,7 +125,7 @@ public class SandwichDAO implements MySqlSandwichDAO {
 				    rs.previous();
 				}
 		}catch(SQLException e) {
-			//throw new DAOException("Error in SQL", e);
+			throw new DataBaseException("Error in SQL", e);
 		}finally {
 			MySqlDAOFactory.closeConnections(conn, ps, rs);
 		}

@@ -1,14 +1,14 @@
 package com.prokarma.ejercitacion.ej19;
 
-import java.util.List;
+import java.util.Map;
 
 public class Order {
 
-	 private List<Sandwich> sandwiches;
+	 private Map<Integer, Integer> sandwiches;
 	 private Ticket ticket;
 	 private boolean isReady;
 
-	 public Order(List<Sandwich> sandwiches, Ticket ticket) {
+	 public Order(Map<Integer, Integer> sandwiches, Ticket ticket) {
 		 this.sandwiches = sandwiches;
 		 this.ticket = ticket;
 		 this.isReady = false;
@@ -17,7 +17,7 @@ public class Order {
 	public void setReady(boolean ready) {
 		this.isReady = ready;	
 	}
-	public List<Sandwich> getSandwiches() {
+	public Map<Integer, Integer> getSandwiches() {
 		return sandwiches;
 	}
 	public Ticket getTicket() {
@@ -29,7 +29,7 @@ public class Order {
 	public boolean isReady() {
 		return isReady;
 	}
-	public void setSandwiches(List<Sandwich> sandwiches) {
+	public void setSandwiches(Map<Integer, Integer> sandwiches) {
 		this.sandwiches = sandwiches;
 	}
 

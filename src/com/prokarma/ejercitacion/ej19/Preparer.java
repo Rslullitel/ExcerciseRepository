@@ -23,9 +23,6 @@ public class Preparer extends Thread{
 	    }
 
 	    private void deliverOrder (Order order){
-	        for (Sandwich s: order.getSandwiches()){
-	            s.setReady(true);
-	        }
 	        order.setReady(true);
 	        System.out.println("the order has been delivered !");
 	    }
