@@ -1,4 +1,4 @@
-package com.prokarma.ejercitacion.ej19.dao;
+package com.prokarma.ejercitacion.ej19.dao.imple;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,23 +10,25 @@ import java.util.Map;
 
 import com.prokarma.ejercitacion.ej19.Ingredient;
 import com.prokarma.ejercitacion.ej19.Sandwich;
-import com.prokarma.ejercitacion.ej19.exception.CanNotReciveDataException;
+import com.prokarma.ejercitacion.ej19.dao.inter.MySqlDAOFactory;
+import com.prokarma.ejercitacion.ej19.dao.inter.SandwichDAO;
+import com.prokarma.ejercitacion.ej19.exception.UpdateDataException;
 import com.prokarma.ejercitacion.ej19.exception.DataBaseException;
 
-public class SandwichDAO implements MySqlSandwichDAO {
+public class MySqlSandwichDAO implements SandwichDAO {
     
-    private static final String GET_ALL_SANDWICHES = "SELECT s.id_Sandwich, s.price, i.name FROM sandwich s "
-    								   + "INNER JOIN sandwich_have_ingredient sh "
+    private static final String GET_ALL_SANDWICHES = "SELECT s.id_Sandwich, s.price, i.name FROM sandwichs s "
+    								   + "INNER JOIN sandwichs_have_ingredients sh "
     								   + "ON s.id_Sandwich = sh.id_sandwich "
-    								   + "INNER JOIN ingredient i "
+    								   + "INNER JOIN ingredients i "
     								   + "ON sh.id_ingredient = I.id ";
     
-    private static final String GET_STOCK_SANDWICH = "SELECT stock FROM sandwich WHERE id_Sandwich = ?";
-    private static final String GET_ALL_STOCK_SANDWICH = "SELECT SUM(stock) as stock FROM sandwich";
-    private static final String DECREASE_STOCK_SANDWICH = "UPDATE sandwich SET stock = stock - ?  WHERE id_Sandwich = ?";
+    private static final String GET_STOCK_SANDWICH = "SELECT stock FROM sandwichs WHERE id_Sandwich = ?";
+    private static final String GET_ALL_STOCK_SANDWICH = "SELECT SUM(stock) as stock FROM sandwichs";
+    private static final String DECREASE_STOCK_SANDWICH = "UPDATE sandwichs SET stock = stock - ?  WHERE id_Sandwich = ?";
    
     
-	public void decreaseStock(Map<Integer, Integer> stocks) throws DataBaseException, CanNotReciveDataException {
+	public void decreaseStock(Map<Integer, Integer> stocks) throws DataBaseException, UpdateDataException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		
@@ -37,7 +39,7 @@ public class SandwichDAO implements MySqlSandwichDAO {
 					ps.setInt(1, s.getValue());
 					ps.setInt(2, s.getKey());
 				if(ps.executeUpdate() == 0) {
-					throw new CanNotReciveDataException("Could not decrease the stock");
+					throw new UpdateDataException("Could not decrease the stock");
 				}
 			}
 		}catch(SQLException e) {
@@ -47,7 +49,7 @@ public class SandwichDAO implements MySqlSandwichDAO {
 		}
 	}
 	
-	public int getAllSandwichsStock() throws DataBaseException, CanNotReciveDataException {
+	public int getTotalStock() throws DataBaseException, UpdateDataException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -60,7 +62,7 @@ public class SandwichDAO implements MySqlSandwichDAO {
 			if(rs.next()) {
 				stock = rs.getInt("stock");	
 			}else {
-				throw new CanNotReciveDataException("No stock selected");
+				throw new UpdateDataException("No stock selected");
 			}
 		}catch(SQLException e) {
 			throw new DataBaseException(e);
@@ -71,7 +73,7 @@ public class SandwichDAO implements MySqlSandwichDAO {
 	}
 	
 	@Override
-	public boolean getSandwichStock(Map<Integer, Integer> stocks) throws DataBaseException {//cambiar 
+	public boolean isAvailableStock(Map<Integer, Integer> stocks) throws DataBaseException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -121,7 +123,6 @@ public class SandwichDAO implements MySqlSandwichDAO {
 					ingredients.add(new Ingredient(rs.getString("name")));
 				}while(rs.next() && oldSandwichId == rs.getInt("id_Sandwich"));
 					sandwiches.add(new Sandwich(oldSandwichId, price, ingredients));
-					oldSandwichId = rs.getInt("id_Sandwich");
 				    rs.previous();
 				}
 		}catch(SQLException e) {

@@ -1,10 +1,14 @@
-package com.prokarma.ejercitacion.ej19.dao;
+package com.prokarma.ejercitacion.ej19.dao.inter;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import com.prokarma.ejercitacion.ej19.dao.imple.MySqlOrderDAO;
+import com.prokarma.ejercitacion.ej19.dao.imple.MySqlSandwichDAO;
+import com.prokarma.ejercitacion.ej19.dao.imple.MySqlTicketDAO;
 
 
 public class MySqlDAOFactory extends DAOFactory {
@@ -16,18 +20,18 @@ public class MySqlDAOFactory extends DAOFactory {
 
 	
 	@Override
-	public MySqlSandwichDAO getSandwichDAO() {
-		return new SandwichDAO();
+	public SandwichDAO getSandwichDAO() {
+		return new MySqlSandwichDAO();
 	}
 
 	@Override
-	public MySqlOrderDAO getOrderDAO() {
-		return new OrderDAO();
+	public OrderDAO getOrderDAO() {
+		return new MySqlOrderDAO();
 	}
 
 	@Override
-	public MySqlTicketDAO getTicketDAO() {
-		return new TicketDAO();
+	public TicketDAO getTicketDAO() {
+		return new MySqlTicketDAO();
 	}
 	
 	

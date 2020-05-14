@@ -9,11 +9,10 @@ public class Ticket {
 	private String typePay;
 	private Timestamp date;
 
-	public Ticket(int number, int amount, String typePay) {
-		this.number = number;
+	public Ticket(int amount, String typePay) {
 		this.amount = amount;
 		this.typePay = typePay;
-		this.date = new Timestamp(System.currentTimeMillis());//se cambio el date por tipo de dato Timestamp aca y en la base de datos 
+		this.date = new Timestamp(System.currentTimeMillis());
 	}
 	
 	

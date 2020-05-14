@@ -30,7 +30,7 @@ public class Client {
 	    }
 	    
 	    public int sandwichRandom() {
-	    	return (int)(Math.random()*(5-1+1)+1);
+	    	return (int)(Math.random()*(4-1+1)+1);
 	    }
     
 	    public String showPay() {

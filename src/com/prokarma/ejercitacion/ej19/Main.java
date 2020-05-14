@@ -2,8 +2,8 @@ package com.prokarma.ejercitacion.ej19;
 
 import java.util.List;
 
-import com.prokarma.ejercitacion.ej19.dao.MySqlDAOFactory;
-import com.prokarma.ejercitacion.ej19.dao.MySqlSandwichDAO;
+import com.prokarma.ejercitacion.ej19.dao.inter.MySqlDAOFactory;
+import com.prokarma.ejercitacion.ej19.dao.inter.SandwichDAO;
 import com.prokarma.ejercitacion.ej19.exception.DataBaseException;
 
 public class Main {
@@ -23,7 +23,7 @@ public class Main {
 
     public static List<Sandwich> generateSandwiches() throws DataBaseException{
     	MySqlDAOFactory myDAO = new MySqlDAOFactory();
-    	MySqlSandwichDAO sandwichDAO = myDAO.getSandwichDAO();
+    	SandwichDAO sandwichDAO = myDAO.getSandwichDAO();
        return sandwichDAO.getAllSandwiches();
     }
 	

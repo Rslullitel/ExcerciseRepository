@@ -1,4 +1,4 @@
-package com.prokarma.ejercitacion.ej19.dao;
+package com.prokarma.ejercitacion.ej19.dao.imple;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -6,11 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import com.prokarma.ejercitacion.ej19.Ticket;
+import com.prokarma.ejercitacion.ej19.dao.inter.MySqlDAOFactory;
+import com.prokarma.ejercitacion.ej19.dao.inter.TicketDAO;
 import com.prokarma.ejercitacion.ej19.exception.DataBaseException;
 
-public class TicketDAO implements MySqlTicketDAO {
+public class MySqlTicketDAO implements TicketDAO {
 
-	private static final String INSERT = "INSERT INTO ticket(number, amount, type_pay, date) VALUES(?, ?, ?, ?)";
+	private static final String INSERT = "INSERT INTO tickets(amount, type_pay, date) VALUES(?, ?, ?)";
 
 	
 	@Override
@@ -21,10 +23,9 @@ public class TicketDAO implements MySqlTicketDAO {
 		  try {
 			  conn = MySqlDAOFactory.openConnection();
 			  ps = conn.prepareStatement(INSERT);
-			  ps.setInt(1, t.getNumber());
-			  ps.setInt(2, t.getAmount());
-			  ps.setString(3, t.getTypePay());
-			  ps.setTimestamp(4, t.getDate());
+			  ps.setInt(1, t.getAmount());
+			  ps.setString(2, t.getTypePay());
+			  ps.setTimestamp(3, t.getDate());
 			  if(ps.executeUpdate() != 0) {
 					System.out.println("Ticket saved succesfully");
 				}else {

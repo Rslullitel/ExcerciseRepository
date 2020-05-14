@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.BlockingQueue;
 
-import com.prokarma.ejercitacion.ej19.dao.DAOFactory;
-import com.prokarma.ejercitacion.ej19.dao.MySqlOrderDAO;
-import com.prokarma.ejercitacion.ej19.dao.MySqlSandwichDAO;
-import com.prokarma.ejercitacion.ej19.exception.CanNotReciveDataException;
+import com.prokarma.ejercitacion.ej19.dao.inter.DAOFactory;
+import com.prokarma.ejercitacion.ej19.dao.inter.OrderDAO;
+import com.prokarma.ejercitacion.ej19.dao.inter.SandwichDAO;
+import com.prokarma.ejercitacion.ej19.exception.UpdateDataException;
 import com.prokarma.ejercitacion.ej19.exception.DataBaseException;
 
 public class Cashier extends Thread {
@@ -18,17 +18,25 @@ public class Cashier extends Thread {
 	private CashBox cashBox;
 	private List<Sandwich> sandwiches;
 	private ExecutionContext executionContext;
-	private MySqlSandwichDAO sandwichDAO;
-	private MySqlOrderDAO orderDAO;
+	private SandwichDAO sandwichDAO;
+	private OrderDAO orderDAO;
+	private DAOFactory mySql;
+	
 
-	public Cashier(ExecutionContext executionContext, BlockingQueue<Order> orders, BlockingQueue<Client> clients, List<Sandwich> sandwiches, DAOFactory mySql) {
+	public Cashier(ExecutionContext executionContext, BlockingQueue<Order> orders, BlockingQueue<Client> clients, List<Sandwich> sandwiches) throws DataBaseException {
 		this.orders = orders;
 		this.clients = clients;
+		this.mySql = getMySqlDAOFactory();
 		this.cashBox = new CashBox(mySql.getTicketDAO());
 		this.sandwiches = sandwiches;
 		this.executionContext = executionContext;
 		this.sandwichDAO = mySql.getSandwichDAO();
 		this.orderDAO = mySql.getOrderDAO();
+	}
+	
+	public DAOFactory getMySqlDAOFactory() throws DataBaseException {
+		DAOFactory daoFactory = null;
+		return daoFactory.getDAOFactory(1);
 	}
 
 	@Override
@@ -47,7 +55,7 @@ public class Cashier extends Thread {
 				System.out.println("How many sandwich do yo want?");
 				num = client.intRandom();
 				System.out.println("Select the sandwich that you want");
-				if (!this.thereAllStock()) {
+				if (!this.haveAllSandwichStock()) {
 					System.out.println("You are out of stock");
 					this.executionContext.stopExecution();
 				} else {
@@ -60,10 +68,10 @@ public class Cashier extends Thread {
 							mapStocks.replace(sandwich.getIdSandwich(), mapStocks.get(sandwich.getIdSandwich())+1);
 						}
 					}
-					if(thereSandwichStock(mapStocks)) {
+					if(existSandwichStock(mapStocks)) {
 						System.out.println("The total amount is $" + totalAmount);
 						this.sendOrder(new Order(mapStocks, charge(client.pay(totalAmount), client.showPay())));
-						decreaseStock(mapStocks);
+						decreaseSandwichStock(mapStocks);
 					}else {
 						System.out.println("The order has been rejected because fault of stock");
 					}
@@ -82,10 +90,10 @@ public class Cashier extends Thread {
 		}
 	}
 
-	private void decreaseStock(Map<Integer, Integer> stocks) {
+	private void decreaseSandwichStock(Map<Integer, Integer> stocks) {
 		try {
 			this.sandwichDAO.decreaseStock(stocks);
-		} catch (CanNotReciveDataException | DataBaseException e) {
+		} catch (UpdateDataException | DataBaseException e) {
 			System.out.println(e.getMessage());
 		}
 	}
@@ -93,7 +101,7 @@ public class Cashier extends Thread {
 	private void sendOrder(Order order) {
 		try {
 			this.orderDAO.insert(order);
-		} catch (CanNotReciveDataException | DataBaseException e) {
+		} catch (UpdateDataException | DataBaseException e) {
 			System.out.println(e.getMessage());
 		}
 		this.orders.add(order);
@@ -112,22 +120,22 @@ public class Cashier extends Thread {
 		return sandwich;
 	}
 
-	private boolean thereSandwichStock(Map<Integer, Integer> mapStocks) {
+	private boolean existSandwichStock(Map<Integer, Integer> mapStocks) {
 		
 		boolean resp = false;
 		try {
-			resp = this.sandwichDAO.getSandwichStock(mapStocks);
+			resp = this.sandwichDAO.isAvailableStock(mapStocks);
 		} catch (DataBaseException e) {
 			System.out.println(e.getMessage());
 		}
 		return resp;
 	}
 
-	private boolean thereAllStock() {
+	private boolean haveAllSandwichStock() {
 		boolean resp = false;
 		try {
-			resp = this.sandwichDAO.getAllSandwichsStock() != 0;
-		} catch (CanNotReciveDataException | DataBaseException e) {
+			resp = this.sandwichDAO.getTotalStock() != 0;
+		} catch (UpdateDataException | DataBaseException e) {
 			System.out.println(e.getMessage());
 		}
 		return resp;

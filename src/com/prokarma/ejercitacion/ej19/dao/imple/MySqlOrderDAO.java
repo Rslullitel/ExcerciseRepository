@@ -1,4 +1,4 @@
-package com.prokarma.ejercitacion.ej19.dao;
+package com.prokarma.ejercitacion.ej19.dao.imple;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,19 +7,21 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import com.prokarma.ejercitacion.ej19.Order;
-import com.prokarma.ejercitacion.ej19.exception.CanNotReciveDataException;
+import com.prokarma.ejercitacion.ej19.dao.inter.MySqlDAOFactory;
+import com.prokarma.ejercitacion.ej19.dao.inter.OrderDAO;
+import com.prokarma.ejercitacion.ej19.exception.UpdateDataException;
 import com.prokarma.ejercitacion.ej19.exception.DataBaseException;
 
-public class OrderDAO implements MySqlOrderDAO {
+public class MySqlOrderDAO implements OrderDAO {
 
-	private static final String INSERT_ORDER = "INSERT INTO the_order(number_ticket) VALUES(?)";
+	private static final String INSERT_ORDER = "INSERT INTO orders(number_ticket) VALUES((SELECT MAX(number) FROM tickets))";
 	
-	private static final String INSERT_SANDWICH_REGISTER = "INSERT INTO order_register_sandwich(quantity, number_order, id_sandwich)" + 
-															"VALUES(?, (SELECT MAX(number) FROM the_order), ?)";
+	private static final String INSERT_SANDWICH_REGISTER = "INSERT INTO orders_register_sandwichs(quantity, number_order, id_sandwich)" + 
+															"VALUES(?, (SELECT MAX(number) FROM orders), ?)";
 
 
 	@Override
-	public boolean insert(Order o) throws DataBaseException, CanNotReciveDataException {
+	public boolean insert(Order o) throws DataBaseException, UpdateDataException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -28,7 +30,6 @@ public class OrderDAO implements MySqlOrderDAO {
 		try {
 			conn = MySqlDAOFactory.openConnection();
 			ps = conn.prepareStatement(INSERT_ORDER);
-			ps.setInt(1, o.getTicket().getNumber());
 			if(ps.executeUpdate() != 0) {
 				System.out.println("Order saved succesfully");
 				for (Map.Entry<Integer, Integer> s : o.getSandwiches().entrySet()) {
@@ -38,7 +39,7 @@ public class OrderDAO implements MySqlOrderDAO {
 					if(ps.executeUpdate() != 0) {
 						saved = true;
 					}else {
-						throw new CanNotReciveDataException("Could not save the order correctly");
+						throw new UpdateDataException("Could not save the order correctly");
 					}
 				}
 			}else {

@@ -11,7 +11,8 @@ import org.junit.Test;
 import com.prokarma.ejercitacion.ej19.Cashier;
 import com.prokarma.ejercitacion.ej19.ExecutionContext;
 import com.prokarma.ejercitacion.ej19.Sandwich;
-import com.prokarma.ejercitacion.ej19.dao.MySqlDAOFactory;
+import com.prokarma.ejercitacion.ej19.dao.imple.MySqlSandwichDAO;
+import com.prokarma.ejercitacion.ej19.dao.inter.MySqlDAOFactory;
 import com.prokarma.ejercitacion.ej19.exception.DataBaseException;
 
 public class CashierTest {
@@ -22,7 +23,6 @@ public class CashierTest {
 	
 	@BeforeClass
 	public static void tearDown() {
-		cashier = new Cashier(new ExecutionContext(null),null,null, null, new MySqlDAOFactory());
 		sandwiches = new ArrayList<Sandwich>();
 		sandwiches.add(new Sandwich(1, 200, null));
 		sandwiches.add(new Sandwich(1, 200, null));
@@ -34,16 +34,8 @@ public class CashierTest {
 
 	@Test
 	public void test() throws DataBaseException {
-		Map<Integer, Integer> mapStocks = new TreeMap<Integer, Integer>();
-		for(int i = 0; i < sandwiches.size(); i++) {
-			sandwich = sandwiches.get(i);
-			if(!mapStocks.containsKey(sandwich.getIdSandwich())) {
-				mapStocks.put(sandwich.getIdSandwich(), 1);
-			}else {
-				mapStocks.replace(sandwich.getIdSandwich(),mapStocks.get(sandwich.getIdSandwich())+1);
-			}
-		}
-		System.out.println(mapStocks.toString());
+		MySqlSandwichDAO sandwich = new MySqlSandwichDAO();
+		System.out.println(sandwich.getAllSandwiches().toString());
 	}
 
 }
